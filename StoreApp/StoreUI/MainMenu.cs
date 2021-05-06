@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using StoreModels;
+using StoreBL;
+using StoreDL;
 namespace StoreUI
 {
     public class MainMenu : IMenu
     {
+        private ICustomerBL _customerBL = new CustomerBL(new RepoSC());
         public void Start() {
             bool repeat = true;
 
@@ -50,6 +53,10 @@ namespace StoreUI
 
                     case "5":
                         // TODO: Search for a customer
+                        List<Customer> customers = _customerBL.GetAllCustomers();
+                        foreach (Customer customer in customers) {
+                            Console.WriteLine(customer.ToString());
+                        }
                         break;
                     
                     case "6":

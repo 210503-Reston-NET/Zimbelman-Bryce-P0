@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StoreUI
+﻿namespace StoreUI
 {
     class Program
     {
