@@ -24,5 +24,20 @@ namespace StoreBL
         public List<Customer> GetAllCustomers() {
             return _repo.GetAllCustomers();
         }
+
+        public Customer SearchCustomer(string name)
+        {
+            List<Customer> customers = GetAllCustomers();
+                if (customers.Count == 0) {
+                    throw new Exception ("No customers found");
+                } else {
+                    foreach (Customer customer in customers) {
+                    if (name.Equals(customer.Name)) {
+                        return customer;
+                    }
+                }
+                throw new Exception ("No matching customer found");
+            }
+        }
     }
 }

@@ -4,6 +4,9 @@ namespace StoreBL
 {
     public interface IOrderBL
     {
-         List<Order> GetAllOrders();
+         List<Order> GetCustomerOrders();
+         Order AddOrder(Order order);
+
+         Order ViewOrder(Order order);
     }
 }

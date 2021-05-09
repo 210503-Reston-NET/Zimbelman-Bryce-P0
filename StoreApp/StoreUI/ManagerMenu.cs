@@ -23,9 +23,10 @@ namespace StoreUI
             {
                 Console.WriteLine("What would you like to do?\n");
                 Console.WriteLine("[1] Add a new customer");
-                Console.WriteLine("[2] Search for a customer");
-                Console.WriteLine("[3] View location inventory");
-                Console.WriteLine("[4] Replenish Inventory");
+                Console.WriteLine("[2] Get all customers");
+                Console.WriteLine("[3] Search for a customer");
+                Console.WriteLine("[4] View location inventory");
+                Console.WriteLine("[5] Replenish Inventory");
                 Console.WriteLine("[0] Go Back");
 
                 // Receives input from user
@@ -43,15 +44,19 @@ namespace StoreUI
                         break;
 
                     case "2":
-                        // TODO: Search for a customer
                         ViewCustomers();
                         break;
-                    
+
                     case "3":
-                        // TODO: Display location inventory
+                        SearchCustomer();
                         break;
                     
                     case "4":
+                        // TODO: Display location inventory
+                        ViewInventory();
+                        break;
+                    
+                    case "5":
                         // TODO: Replenish Inventory
                         break;
                     
@@ -91,6 +96,26 @@ namespace StoreUI
                 {
                     Console.WriteLine(ex.Message);
             }
+        }
+
+        private void SearchCustomer() {
+            // TODO: Search and return customer
+            string name = _validate.ValidateString("Enter name of customer you want to view");
+            try
+            {
+                Customer customer = _customerBL.SearchCustomer(name);
+                Console.WriteLine(customer.ToString());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void ViewInventory() {
+            string name = _validate.ValidateString("Enter name of store you want to view");
+            // TODO: Implement store search and view inventory
+            
         }
     }
 }
