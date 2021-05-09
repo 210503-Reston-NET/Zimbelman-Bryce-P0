@@ -6,9 +6,11 @@ namespace StoreModels
     /// </summary>
     public class Espresso
     {
-        public Espresso(string name, int quantity) {
+        public Espresso(string name, int quantity, int price, string desription) {
             this.ItemName = name;
             this.Quantity = quantity;
+            this.Price = price;
+            this.Description = desription;
         }
         /// <summary>
         /// This stores the name of the item
@@ -16,10 +18,22 @@ namespace StoreModels
         /// <value></value>
         public string ItemName { get; set; }
 
-/// <summary>
-/// This stores the quantity of the item
-/// </summary>
-/// <value></value>
+        /// <summary>
+        /// This stores the quantity of the item
+        /// </summary>
+        /// <value></value>
         public int Quantity { get; set; }
+
+        /// <summary>
+        /// This stores the price of the item
+        /// </summary>
+        /// <value></value>
+        public int Price { get; set; }
+
+        /// <summary>
+        /// This stores a description of the item
+        /// </summary>
+        /// <value></value>
+        public string Description { get; set; }
     }
 }
