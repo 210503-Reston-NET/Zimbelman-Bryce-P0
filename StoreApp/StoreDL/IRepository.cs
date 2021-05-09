@@ -4,7 +4,8 @@ namespace StoreDL
 {
     public interface IRepository
     {
-//      List<Order> GetAllOrders();
         List<Customer> GetAllCustomers();
+        Customer AddCustomer(Customer customer);
+        Customer GetCustomer(Customer customer);
     }
 }

@@ -9,8 +9,7 @@
         static void Main(string[] args)
         {
             //call method that starts main user interface
-            IMenu menu = new MainMenu();
-            menu.Start();
+            MenuFactory.GetMenu("main").Start();
         }
     }
 }
