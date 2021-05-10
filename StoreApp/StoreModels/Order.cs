@@ -10,9 +10,10 @@ namespace StoreModels
         /// </summary>
         /// <param name="location"></param>
         /// <param name="total"></param>
-        public Order(Location location, double total) {
+        public Order(Location location, double total, Product product) {
             this.Location = location;
             this.Total = total;
+            this.Product = product;
         }
 
         /// <summary>
@@ -26,6 +27,11 @@ namespace StoreModels
         /// </summary>
         /// <value></value>
         public Location Location { get; set; }
+        /// <summary>
+        /// This stores the product in an order
+        /// </summary>
+        /// <value></value>
+        public Product Product { get; set; }
 
         /// <summary>
         /// This stores the total amount of an order

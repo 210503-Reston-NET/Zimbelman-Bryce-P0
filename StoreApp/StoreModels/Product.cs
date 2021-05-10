@@ -4,9 +4,9 @@ namespace StoreModels
     /// <summary>
     /// This data structure models a product and its quantity. The quantity was separated from the product as it could vary from orders and locations.  
     /// </summary>
-    public class Frost
+    public class Product
     {
-            public Frost(string name, int quantity, int price, string desription) {
+            public Product(string name, int quantity, int price, string desription) {
                 this.ItemName = name;
                 this.Quantity = quantity;
                 this.Price = price;
