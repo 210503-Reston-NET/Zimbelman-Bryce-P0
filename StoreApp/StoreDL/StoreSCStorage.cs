@@ -9,7 +9,11 @@ namespace StoreDL
     public class StoreSCStorage
     {
         public static List<Customer> Customers = new List<Customer>() {
-            new Customer("Bryce Zimbelman", "10-15-1994", "(920) 264-4500", "bryce.zimbelman@revature.net", "1514 Canyon Dr")
+            new Customer("name", "birthdate", "phone#", "email", "Mailing Address")
+        };
+
+        public static List<Location> Locations = new List<Location>() {
+            new Location("name", "address", "city", "state", 1, 1, 1)
         };
     }
 }

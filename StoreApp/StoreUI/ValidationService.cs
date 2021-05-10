@@ -4,6 +4,27 @@ namespace StoreUI
 {
     public class ValidationService : IValidationService
     {
+        public int ValidateInt(string prompt)
+        {
+            Console.WriteLine(prompt);
+            string input = Console.ReadLine();
+            int numVal = 0;
+
+            try
+            {
+                numVal = Convert.ToInt32(input);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Please input a valid number");
+            }
+            catch (OverflowException) {
+                Console.WriteLine("Please input a valid number");
+            }
+            return numVal;
+
+        }
+
         public string ValidateString(string prompt)
         {
             string response;

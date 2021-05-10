@@ -9,10 +9,13 @@ namespace StoreUI
     {
         private ICustomerBL _customerBL;
 
+        private ILocationBL _locationBL;
+
         private IValidationService _validate;
 
-        public ManagerMenu(ICustomerBL customerBL, IValidationService validate) {
+        public ManagerMenu(ICustomerBL customerBL, ILocationBL locationBL, IValidationService validate) {
             _customerBL = customerBL;
+            _locationBL = locationBL;
             _validate = validate;
         }
 
@@ -25,8 +28,9 @@ namespace StoreUI
                 Console.WriteLine("[1] Add a new customer");
                 Console.WriteLine("[2] Get all customers");
                 Console.WriteLine("[3] Search for a customer");
-                Console.WriteLine("[4] View location inventory");
-                Console.WriteLine("[5] Replenish Inventory");
+                Console.WriteLine("[4] Add a Location");
+                Console.WriteLine("[5] View location inventory");
+                Console.WriteLine("[6] Replenish Inventory");
                 Console.WriteLine("[0] Go Back");
 
                 // Receives input from user
@@ -50,13 +54,16 @@ namespace StoreUI
                     case "3":
                         SearchCustomer();
                         break;
-                    
+
                     case "4":
-                        // TODO: Display location inventory
-                        ViewInventory();
+                        AddALocation();
                         break;
                     
                     case "5":
+                        ViewInventory();
+                        break;
+                    
+                    case "6":
                         // TODO: Replenish Inventory
                         break;
                     
@@ -98,6 +105,29 @@ namespace StoreUI
             }
         }
 
+        private void AddALocation() {
+            Console.WriteLine("Enter the details of the location you want to add");
+            string name = _validate.ValidateString("Enter the location name: ");
+            string address = _validate.ValidateString("Enter the location street address: ");
+            string city = _validate.ValidateString("Enter the location city: ");
+            string state = _validate.ValidateString("Enter the location state: ");
+            int mochaInventory = _validate.ValidateInt("Enter the location Mocha inventory amount: ");
+            int frostInventory = _validate.ValidateInt("Enter the location Frost inventory amount: ");
+            int espressoInventory = _validate.ValidateInt("Enter the location Espresso inventory amount: ");
+            try
+            {
+                Location newLocation = new Location(name, address, city, state, mochaInventory, frostInventory, espressoInventory);
+                Location createdLocation = _locationBL.AddLocation(newLocation);
+                Console.WriteLine("New Location Created");
+                Console.WriteLine(createdLocation.ToString());
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+        }
+
         private void SearchCustomer() {
             // TODO: Search and return customer
             string name = _validate.ValidateString("Enter name of customer you want to view");
@@ -115,7 +145,15 @@ namespace StoreUI
         private void ViewInventory() {
             string name = _validate.ValidateString("Enter name of store you want to view");
             // TODO: Implement store search and view inventory
-            
+            try
+            {
+                List<int> inventory = _locationBL.GetStoreInventory(name);
+                Console.WriteLine("Mochas: {Mochas}, Frosts: {Frosts}, Espressos: {Espressos}", inventory[0], inventory[1], inventory[2]);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

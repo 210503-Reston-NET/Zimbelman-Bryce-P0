@@ -5,8 +5,8 @@ namespace StoreModels
     /// </summary>
     public class Location
     {
-        public Location(string name, string address, string city, string state, int mochaInventory, int frostInventory, int espressoInventory) {
-            this.Name = name;
+        public Location(string storeName, string address, string city, string state, int mochaInventory, int frostInventory, int espressoInventory) {
+            this.StoreName = storeName;
             this.Address = address;
             this.City = city;
             this.State = state;
@@ -37,7 +37,7 @@ namespace StoreModels
         /// This contains the name of a store location
         /// </summary>
         /// <value></value>
-        public string Name { get; set; }
+        public string StoreName { get; set; }
 
         /// <summary>
         /// This contains the local Mocha inventory of a store location

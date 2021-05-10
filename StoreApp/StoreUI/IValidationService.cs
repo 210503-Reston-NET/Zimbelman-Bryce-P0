@@ -11,5 +11,12 @@ namespace StoreUI
         /// <param name="prompt"></param>
         /// <returns></returns>
          string ValidateString(string prompt);
+
+         /// <summary>
+         /// Takes in a prompt, and keeps asking that prompt until the user returns a valid int
+         /// </summary>
+         /// <param name="prompt"></param>
+         /// <returns></returns>
+         int ValidateInt(string prompt);
     }
 }

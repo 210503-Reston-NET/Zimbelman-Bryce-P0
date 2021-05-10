@@ -17,7 +17,7 @@ namespace StoreUI
                         return new CustomerMenu(new CustomerBL(new RepoFile()), new ValidationService());
 
                     case "manager":
-                        return new ManagerMenu(new CustomerBL(new RepoFile()), new ValidationService());
+                        return new ManagerMenu(new CustomerBL(new RepoFile()), new LocationBL(new RepoFile()), new ValidationService());
 
                 default:
                     return null;
