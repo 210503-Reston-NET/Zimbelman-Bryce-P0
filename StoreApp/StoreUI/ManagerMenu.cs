@@ -89,7 +89,7 @@ namespace StoreUI
                 Console.WriteLine("Enter the details of the customer you want to add");
                 string name = _validate.ValidateString("Enter the customer name: ");
                 string birthdate = _validate.ValidateString("Enter the customer birthdate (MM/DD/YYYY): ");
-                string phoneNumber = _validate.ValidateString("Enter the customer phoneNumber: ");
+                string phoneNumber = _validate.ValidateString("Enter the customer Phone Number: ");
                 string email = _validate.ValidateString("Enter the customer email: ");
                 string mailAddress = _validate.ValidateString("Enter the customer mailing address: ");
                 try
@@ -121,10 +121,9 @@ namespace StoreUI
                 Console.WriteLine("New Location Created");
                 Console.WriteLine(createdLocation.ToString());
             }
-            catch (System.Exception)
+            catch (Exception ex) 
             {
-                
-                throw;
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -148,7 +147,7 @@ namespace StoreUI
             try
             {
                 List<int> inventory = _locationBL.GetStoreInventory(name);
-                Console.WriteLine("Mochas: {Mochas}, Frosts: {Frosts}, Espressos: {Espressos}", inventory[0], inventory[1], inventory[2]);
+                Console.WriteLine($"\nMocha: {inventory[0]} \nFrost: {inventory[1]} \nEspresso: {inventory[2]}");
             }
             catch (Exception ex)
             {

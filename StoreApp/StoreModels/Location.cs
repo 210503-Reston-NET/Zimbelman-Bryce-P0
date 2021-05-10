@@ -56,5 +56,14 @@ namespace StoreModels
         /// </summary>
         /// <value></value>
         public int EspressoInventory { get; set; }
+
+        public override string ToString()
+        {
+            return $"Name: {StoreName} \nAdress: {Address} \nCity: {City} \nState: {State} \nMocha Inventory: {MochaInventory} \nFrostInventory: {FrostInventory} \n Espresso Inventory: {EspressoInventory}\n";
+        }
+
+        public bool Equals(Location location) {
+            return this.StoreName.Equals(location.StoreName) && this.Address.Equals(location.Address) && this.City.Equals(location.City) && this.State.Equals(location.State) && this.MochaInventory.Equals(location.MochaInventory) && this.FrostInventory.Equals(location.FrostInventory) && this.EspressoInventory.Equals(location.EspressoInventory);
+        }
     }
 }

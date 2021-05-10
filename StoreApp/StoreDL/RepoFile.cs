@@ -13,7 +13,8 @@ namespace StoreDL
     /// </summary>
     public class RepoFile : IRepository
     {
-        private const string filePath = "../StoreDL/StoreData.json";
+        private const string customerFilePath = "../StoreDL/Customers.json";
+        private const string locationFilePath = "../StoreDL/Locations.json";
 
         /// <summary>
         /// Hold string versions of my objects
@@ -24,14 +25,14 @@ namespace StoreDL
             List<Customer> customersFromFile = GetAllCustomers();
             customersFromFile.Add(customer);
             jsonString = JsonSerializer.Serialize(customersFromFile);
-            File.WriteAllText(filePath, jsonString);
+            File.WriteAllText(customerFilePath, jsonString);
             return customer;
         }
 
         public List<Customer> GetAllCustomers() {
             try
             {
-                jsonString = File.ReadAllText(filePath);
+                jsonString = File.ReadAllText(customerFilePath);
             }
             catch (Exception ex) {
                 // Logging to the console
@@ -43,7 +44,7 @@ namespace StoreDL
 
         public List<Location> GetLocations() {
             try {
-                jsonString = File.ReadAllText(filePath);
+                jsonString = File.ReadAllText(locationFilePath);
             }
             catch (Exception ex) {
                 // Logging to the console
@@ -62,7 +63,7 @@ namespace StoreDL
             List<Location> locationsFromFile = GetLocations();
             locationsFromFile.Add(location);
             jsonString = JsonSerializer.Serialize(locationsFromFile);
-            File.WriteAllText(filePath, jsonString);
+            File.WriteAllText(locationFilePath, jsonString);
             return location;
         }
 
