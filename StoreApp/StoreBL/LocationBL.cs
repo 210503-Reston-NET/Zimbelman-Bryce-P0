@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using StoreModels;
 using StoreDL;
 using System;
+
 namespace StoreBL
 {
 
@@ -48,9 +49,26 @@ namespace StoreBL
             }
         }
 
-        public Location ReplenishInventory(Location location)
+        public List<int> ReplenishInventory(string name, int mochaInventory, int frostInventory, int espressoInventory)
         {
-            throw new NotImplementedException();
+            List<Location> locations = GetLocations();
+            if (locations.Count == 0) {
+                throw new Exception ("No Locations Found");
+            } else {
+                foreach (Location location in locations) {
+                    if (name.Equals(location.StoreName)) {
+                        location.MochaInventory += mochaInventory;
+                        location.FrostInventory += frostInventory;
+                        location.EspressoInventory += espressoInventory;
+                        List<int> inventory = new List<int>();
+                        inventory.Add(location.MochaInventory);
+                        inventory.Add(location.FrostInventory);
+                        inventory.Add(location.EspressoInventory);
+                        return inventory;
+                    }
+                }
+                throw new Exception ("No matching locations found");
+            }
         }
     }
 }

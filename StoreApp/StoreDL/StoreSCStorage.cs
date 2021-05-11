@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using StoreModels;
-using System.Linq;
 namespace StoreDL
 {
     /// <summary>
@@ -14,6 +13,10 @@ namespace StoreDL
 
         public static List<Location> Locations = new List<Location>() {
             new Location("name", "address", "city", "state", 1, 1, 1)
+        };
+
+        public static List<Product> Products = new List<Product>() {
+            new Product("name", 1.99, "description")
         };
     }
 }

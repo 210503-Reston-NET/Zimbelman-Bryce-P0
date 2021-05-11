@@ -38,6 +38,7 @@ namespace StoreUI
                     
                     case "1":
                         // TODO: Place an order
+                        PlaceOrder();
                         break;
 
                     case "2":
@@ -79,6 +80,12 @@ namespace StoreUI
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+        private void PlaceOrder() {
+            Console.WriteLine("Enter the amount you would like to order of each product");
+            int mochaOrder = _validate.ValidateInt("Mocha: ");
+            int frostOrder = _validate.ValidateInt("Frost: ");
+            int espressoOrder = _validate.ValidateInt("Espresso: ");
         }
     }
 }

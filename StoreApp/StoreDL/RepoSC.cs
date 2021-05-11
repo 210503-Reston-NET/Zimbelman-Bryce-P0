@@ -20,8 +20,19 @@ namespace StoreDL
             return location;
         }
 
+        public Product AddProduct(Product product)
+        {
+            StoreSCStorage.Products.Add(product);
+            return product;
+        }
+
         public List<Customer> GetAllCustomers() {
             return StoreSCStorage.Customers;
+        }
+
+        public List<Product> GetAllProducts()
+        {
+            return StoreSCStorage.Products;
         }
 
         public Customer GetCustomer(Customer customer) {
@@ -36,6 +47,11 @@ namespace StoreDL
         public List<Location> GetLocations()
         {
             return StoreSCStorage.Locations;
+        }
+
+        public Product GetProduct(Product product)
+        {
+            return StoreSCStorage.Products.FirstOrDefault(prod => prod.Equals(product));
         }
     }
 }

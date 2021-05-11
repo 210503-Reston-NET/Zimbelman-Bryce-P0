@@ -8,6 +8,6 @@ namespace StoreBL
          Location AddLocation(Location location);
          List<Location> GetLocations();
          List<int> GetStoreInventory(string name);
-         Location ReplenishInventory(Location location);
+         List<int> ReplenishInventory(string name, int mochaInventory, int frostInventory, int espressoInventory);
     }
 }

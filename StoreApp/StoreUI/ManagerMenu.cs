@@ -10,12 +10,14 @@ namespace StoreUI
         private ICustomerBL _customerBL;
 
         private ILocationBL _locationBL;
+        private IProductBL _productBL;
 
         private IValidationService _validate;
 
-        public ManagerMenu(ICustomerBL customerBL, ILocationBL locationBL, IValidationService validate) {
+        public ManagerMenu(ICustomerBL customerBL, ILocationBL locationBL, IProductBL productBL,IValidationService validate) {
             _customerBL = customerBL;
             _locationBL = locationBL;
+            _productBL = productBL;
             _validate = validate;
         }
 
@@ -26,11 +28,13 @@ namespace StoreUI
             {
                 Console.WriteLine("What would you like to do?\n");
                 Console.WriteLine("[1] Add a new customer");
-                Console.WriteLine("[2] Get all customers");
+                Console.WriteLine("[2] View all customers");
                 Console.WriteLine("[3] Search for a customer");
                 Console.WriteLine("[4] Add a Location");
                 Console.WriteLine("[5] View location inventory");
                 Console.WriteLine("[6] Replenish Inventory");
+                Console.WriteLine("[7] Add a new product");
+                Console.WriteLine("[8] View all products");
                 Console.WriteLine("[0] Go Back");
 
                 // Receives input from user
@@ -64,7 +68,15 @@ namespace StoreUI
                         break;
                     
                     case "6":
-                        // TODO: Replenish Inventory
+                        ReplenishInventory();
+                        break;
+
+                    case "7":
+                        AddAProduct();
+                        break;
+                    
+                    case "8":
+                        ViewAllProducts();
                         break;
                     
                     default:
@@ -127,8 +139,22 @@ namespace StoreUI
             }
         }
 
+        private void AddAProduct() {
+            Console.WriteLine("Enter the details of the product you want to add");
+            string itemName = _validate.ValidateString("Enter the product name: ");
+            double price = _validate.ValidateDouble("Enter the price of the product: ");
+            string description = _validate.ValidateString("Enter a description for the product: ");
+            try {
+                Product newProduct = new Product(itemName, price, description);
+                Product createdProduct = _productBL.AddProduct(newProduct);
+                Console.WriteLine("New Product Created");
+                Console.WriteLine(createdProduct.ToString());
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         private void SearchCustomer() {
-            // TODO: Search and return customer
             string name = _validate.ValidateString("Enter name of customer you want to view");
             try
             {
@@ -143,10 +169,39 @@ namespace StoreUI
 
         private void ViewInventory() {
             string name = _validate.ValidateString("Enter name of store you want to view");
-            // TODO: Implement store search and view inventory
             try
             {
                 List<int> inventory = _locationBL.GetStoreInventory(name);
+                Console.WriteLine($"\nMocha: {inventory[0]} \nFrost: {inventory[1]} \nEspresso: {inventory[2]}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void ViewAllProducts() {
+            // TODO: Implement view all products
+            List<Product> products = _productBL.GetAllProducts();
+                if (products.Count == 0) {
+                    Console.WriteLine("No products found");
+                } else {
+                    foreach (Product product in products) {
+                    Console.WriteLine(product.ToString());
+                }   
+            }
+        }
+        
+        private void ReplenishInventory() {
+            string name = _validate.ValidateString("Enter name of store you want to replenish");
+            int mochaInventory = _validate.ValidateInt("Enter the amount to add to Mocha inventory: ");
+            int frostInventory = _validate.ValidateInt("Enter the amount to add to Frost inventory: ");
+            int espressoInventory = _validate.ValidateInt("Enter the amount to add to Espresso inventory: ");
+            // TODO: Add new values to location inventory
+            try
+            {
+                List<int> inventory = _locationBL.ReplenishInventory(name, mochaInventory, frostInventory, espressoInventory);
+                Console.WriteLine($"{name} store inventory updated");
                 Console.WriteLine($"\nMocha: {inventory[0]} \nFrost: {inventory[1]} \nEspresso: {inventory[2]}");
             }
             catch (Exception ex)

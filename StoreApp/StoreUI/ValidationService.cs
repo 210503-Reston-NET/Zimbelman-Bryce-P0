@@ -6,13 +6,17 @@ namespace StoreUI
     {
         public int ValidateInt(string prompt)
         {
-            Console.WriteLine(prompt);
-            string input = Console.ReadLine();
             int numVal = 0;
+            bool repeat = true;
 
-            try
+            do
+            {
+                Console.WriteLine(prompt);
+                string input = Console.ReadLine();
+                try
             {
                 numVal = Convert.ToInt32(input);
+                repeat = false;
             }
             catch (FormatException)
             {
@@ -21,8 +25,8 @@ namespace StoreUI
             catch (OverflowException) {
                 Console.WriteLine("Please input a valid number");
             }
+            } while (repeat);
             return numVal;
-
         }
 
         public string ValidateString(string prompt)
@@ -39,6 +43,17 @@ namespace StoreUI
                 }
             } while (repeat);
             return response;
+        }
+
+        public double ValidateDouble(string prompt)
+        {
+            double numVal = 0;
+            Console.WriteLine(prompt);
+
+            while (!double.TryParse(Console.ReadLine(), out numVal)) {
+                Console.WriteLine("Please input a valid price $X.XX");
+            }
+            return numVal;
         }
     }
 }
