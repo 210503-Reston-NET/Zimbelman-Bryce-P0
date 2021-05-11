@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace StoreModels
 {
     /// <summary>
@@ -5,15 +7,13 @@ namespace StoreModels
     /// </summary>
     public class Order
     {
-        /// <summary>
-        /// This stores the location and total for a store order
-        /// </summary>
-        /// <param name="location"></param>
-        /// <param name="total"></param>
-        public Order(Location location, double total, Product product) {
+        public Order(Location location, Customer customer, double total, int mochaQuantity, int frostQuantity, int espressoQuantity) {
             this.Location = location;
+            this.Customer = customer;
             this.Total = total;
-            this.Product = product;
+            this.MochaQuantity = mochaQuantity;
+            this.FrostQuantity = frostQuantity;
+            this.EspressoQuantity = espressoQuantity;
         }
 
         /// <summary>
@@ -27,11 +27,9 @@ namespace StoreModels
         /// </summary>
         /// <value></value>
         public Location Location { get; set; }
-        /// <summary>
-        /// This stores the product in an order
-        /// </summary>
-        /// <value></value>
-        public Product Product { get; set; }
+        public int MochaQuantity { get; set; }
+        public int FrostQuantity { get; set; }
+        public int EspressoQuantity { get; set; }
 
         /// <summary>
         /// This stores the total amount of an order
