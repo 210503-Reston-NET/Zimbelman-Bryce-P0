@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using StoreModels;
 using StoreDL;
@@ -58,11 +59,18 @@ namespace StoreBL
                 throw new Exception ("No Locations Found");
             } else {
                 foreach (Location location in locations) {
-                    if (name.Equals(location.StoreName)) {
+                    if (name.Equals(location.StoreName) && location.ProductQuantity.Any()) {
+                        location.NumOfProducts = numOfProducts;
+                        for (int i = 0; i <= location.NumOfProducts - 1; i++)
+                        {
+                            location.ProductQuantity[i] += productQuantity[i];
+                        }
+                        _repo.ReplenishInventory(location);
+                        return productQuantity;
+                    } else if (name.Equals(location.StoreName)) {
                         location.NumOfProducts = numOfProducts;
                         location.ProductQuantity = productQuantity;
-                        // TODO: Switch to ReplenishQuantity once implemented
-                        _repo.AddLocation(location);
+                        _repo.ReplenishInventory(location);
                         return productQuantity;
                     }
                 }

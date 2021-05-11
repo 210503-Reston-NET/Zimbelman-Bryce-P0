@@ -205,7 +205,7 @@ namespace StoreUI
             int i = 0;
             foreach (Product product in products)
             {
-                quantity.Add(_validate.ValidateInt($"Enter quantity for {product.ItemName}"));
+                quantity.Add(_validate.ValidateInt($"Enter quantity to add for {product.ItemName}"));
             }
             try
             {

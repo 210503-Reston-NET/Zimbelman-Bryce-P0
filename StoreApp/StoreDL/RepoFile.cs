@@ -102,7 +102,16 @@ namespace StoreDL
 
         public Location ReplenishInventory(Location location)
         {
-            // Implement edit quantity
+            List<Location> locations = GetLocations();
+            foreach (Location quantity in locations.ToList())
+            {
+                if (location.StoreName.Equals(quantity.StoreName)) {
+                    locations.Remove(quantity);
+                    locations.Add(location);
+                    jsonString = JsonSerializer.Serialize(locations);
+                    File.WriteAllText(locationFilePath, jsonString);
+                }
+            }
             return location;
         }
     }
