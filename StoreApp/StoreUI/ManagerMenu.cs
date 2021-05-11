@@ -99,14 +99,15 @@ namespace StoreUI
 
             private void AddACustomer() {
                 Console.WriteLine("Enter the details of the customer you want to add");
-                string name = _validate.ValidateString("Enter the customer name: ");
+                string firstName = _validate.ValidateString("Enter the customer first name: ");
+                string lastName = _validate.ValidateString("Enter the customer last name");
                 string birthdate = _validate.ValidateString("Enter the customer birthdate (MM/DD/YYYY): ");
-                string phoneNumber = _validate.ValidateString("Enter the customer Phone Number: ");
+                string phoneNumber = _validate.ValidateString("Enter the customer phone number: ");
                 string email = _validate.ValidateString("Enter the customer email: ");
                 string mailAddress = _validate.ValidateString("Enter the customer mailing address: ");
                 try
                 {
-                    Customer newCustomer = new Customer(name, birthdate, phoneNumber, email, mailAddress);
+                    Customer newCustomer = new Customer(firstName, lastName, birthdate, phoneNumber, email, mailAddress);
                     Customer createdCustomer = _customerBL.AddCustomer(newCustomer);
                     Console.WriteLine("New Customer Created!");
                     Console.WriteLine(createdCustomer.ToString());

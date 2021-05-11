@@ -8,7 +8,7 @@ namespace StoreDL
     public class StoreSCStorage
     {
         public static List<Customer> Customers = new List<Customer>() {
-            new Customer("name", "birthdate", "phone#", "email", "Mailing Address")
+            new Customer("firstName", "lastName","birthdate", "phone#", "email", "Mailing Address")
         };
 
         public static List<Location> Locations = new List<Location>() {
