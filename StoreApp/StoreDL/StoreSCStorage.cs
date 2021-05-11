@@ -12,7 +12,7 @@ namespace StoreDL
         };
 
         public static List<Location> Locations = new List<Location>() {
-            new Location("name", "address", "city", "state", 1, 1, 1)
+            new Location("name", "address", "city", "state", 1, new List<int>())
         };
 
         public static List<Product> Products = new List<Product>() {

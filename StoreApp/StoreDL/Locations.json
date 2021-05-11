@@ -1,1 +1,1 @@
-[{"Address":"3200 E Racine","City":"Janesville","State":"WI","StoreName":"Janesville","MochaInventory":39,"FrostInventory":20,"EspressoInventory":10}]
+[{"Address":"3200 E Racine","City":"Janesville","State":"WI","StoreName":"Janesville","NumOfProducts":3,"ProductQuantity":[]},{"Address":"3200 E Racine","City":"Janesville","State":"WI","StoreName":"Janesville","NumOfProducts":3,"ProductQuantity":[5,4,3]}]

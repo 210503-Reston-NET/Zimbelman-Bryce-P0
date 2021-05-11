@@ -38,18 +38,20 @@ namespace StoreBL
             } else {
                 foreach (Location location in locations) {
                     if (name.Equals(location.StoreName)) {
-                        List<int> inventory = new List<int>();
-                        inventory.Add(location.MochaInventory);
-                        inventory.Add(location.FrostInventory);
-                        inventory.Add(location.EspressoInventory);
-                        return inventory;
+                        List<int> quantity = new List<int>();
+                        // Retrieves product quantities
+                        for (int i = 0; i <= location.NumOfProducts - 1; i++)
+                        {
+                            quantity.Add(location.ProductQuantity[i]);
+                        }
+                        return quantity;
                     }
                 }
                 throw new Exception ("No matching locations found");
             }
         }
 
-        public List<int> ReplenishInventory(string name, int mochaInventory, int frostInventory, int espressoInventory)
+        public List<int> ReplenishInventory(string name, int numOfProducts, List<int> productQuantity)
         {
             List<Location> locations = GetLocations();
             if (locations.Count == 0) {
@@ -57,14 +59,11 @@ namespace StoreBL
             } else {
                 foreach (Location location in locations) {
                     if (name.Equals(location.StoreName)) {
-                        location.MochaInventory += mochaInventory;
-                        location.FrostInventory += frostInventory;
-                        location.EspressoInventory += espressoInventory;
-                        List<int> inventory = new List<int>();
-                        inventory.Add(location.MochaInventory);
-                        inventory.Add(location.FrostInventory);
-                        inventory.Add(location.EspressoInventory);
-                        return inventory;
+                        location.NumOfProducts = numOfProducts;
+                        location.ProductQuantity = productQuantity;
+                        // TODO: Switch to ReplenishQuantity once implemented
+                        _repo.AddLocation(location);
+                        return productQuantity;
                     }
                 }
                 throw new Exception ("No matching locations found");

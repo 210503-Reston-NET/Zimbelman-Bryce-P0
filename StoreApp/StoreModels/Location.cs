@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace StoreModels
 {
     /// <summary>
@@ -5,14 +6,13 @@ namespace StoreModels
     /// </summary>
     public class Location
     {
-        public Location(string storeName, string address, string city, string state, int mochaInventory, int frostInventory, int espressoInventory) {
+        public Location(string storeName, string address, string city, string state, int numOfProducts, List<int> productQuantity) {
             this.StoreName = storeName;
             this.Address = address;
             this.City = city;
             this.State = state;
-            this.MochaInventory = mochaInventory;
-            this.FrostInventory = frostInventory;
-            this.EspressoInventory = espressoInventory;
+            this.NumOfProducts = numOfProducts;
+            this.ProductQuantity = productQuantity;
         }
 
         /// <summary>
@@ -39,31 +39,16 @@ namespace StoreModels
         /// <value></value>
         public string StoreName { get; set; }
 
-        /// <summary>
-        /// This contains the local Mocha inventory of a store location
-        /// </summary>
-        /// <value></value>
-        public int MochaInventory { get; set; }
-
-        /// <summary>
-        /// This contains the local Frost inventory of a store location
-        /// </summary>
-        /// <value></value>
-        public int FrostInventory { get; set; }
-
-        /// <summary>
-        /// This contains the local Espresso inventory of a store location
-        /// </summary>
-        /// <value></value>
-        public int EspressoInventory { get; set; }
+        public int NumOfProducts { get; set; }
+        public List<int> ProductQuantity { get; set; }
 
         public override string ToString()
         {
-            return $"Name: {StoreName} \nAdress: {Address} \nCity: {City} \nState: {State} \nMocha Inventory: {MochaInventory} \nFrostInventory: {FrostInventory} \n Espresso Inventory: {EspressoInventory}\n";
+            return $"Name: {StoreName} \nAdress: {Address} \nCity: {City} \nState: {State}";
         }
 
         public bool Equals(Location location) {
-            return this.StoreName.Equals(location.StoreName) && this.Address.Equals(location.Address) && this.City.Equals(location.City) && this.State.Equals(location.State) && this.MochaInventory.Equals(location.MochaInventory) && this.FrostInventory.Equals(location.FrostInventory) && this.EspressoInventory.Equals(location.EspressoInventory);
+            return this.StoreName.Equals(location.StoreName);
         }
     }
 }

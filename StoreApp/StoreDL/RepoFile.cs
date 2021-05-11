@@ -99,5 +99,11 @@ namespace StoreDL
             }
             return JsonSerializer.Deserialize<List<Product>>(jsonString);
         }
+
+        public Location ReplenishInventory(Location location)
+        {
+            // Implement edit quantity
+            return location;
+        }
     }
 }

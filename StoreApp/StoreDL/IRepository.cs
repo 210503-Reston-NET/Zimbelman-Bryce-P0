@@ -14,5 +14,7 @@ namespace StoreDL
         Product AddProduct(Product product);
         Product GetProduct(Product product);
         List<Product> GetAllProducts();
+
+        Location ReplenishInventory(Location location);
     }
 }

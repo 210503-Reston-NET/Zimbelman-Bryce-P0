@@ -7,13 +7,16 @@ namespace StoreModels
     /// </summary>
     public class Order
     {
-        public Order(Location location, Customer customer, double total, int mochaQuantity, int frostQuantity, int espressoQuantity) {
+        /// <summary>
+        /// This stores the location and total for a store order
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="total"></param>
+        public Order(Location location, double total, List<Product> product, int numOfProduct, List<int> Quantity) {
             this.Location = location;
-            this.Customer = customer;
             this.Total = total;
-            this.MochaQuantity = mochaQuantity;
-            this.FrostQuantity = frostQuantity;
-            this.EspressoQuantity = espressoQuantity;
+            this.Product = product;
+
         }
 
         /// <summary>
@@ -27,14 +30,19 @@ namespace StoreModels
         /// </summary>
         /// <value></value>
         public Location Location { get; set; }
-        public int MochaQuantity { get; set; }
-        public int FrostQuantity { get; set; }
-        public int EspressoQuantity { get; set; }
+        /// <summary>
+        /// This stores the product in an order
+        /// </summary>
+        /// <value></value>
+        public List<Product> Product { get; set; }
 
         /// <summary>
         /// This stores the total amount of an order
         /// </summary>
         /// <value></value>
+        
+        public int NumOfProduct { get; set; }
+        public List<int> Quantity { get; set; }
         public double Total { get; set; }
     }
 }

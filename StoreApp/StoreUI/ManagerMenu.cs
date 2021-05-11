@@ -123,12 +123,10 @@ namespace StoreUI
             string address = _validate.ValidateString("Enter the location street address: ");
             string city = _validate.ValidateString("Enter the location city: ");
             string state = _validate.ValidateString("Enter the location state: ");
-            int mochaInventory = _validate.ValidateInt("Enter the location Mocha inventory amount: ");
-            int frostInventory = _validate.ValidateInt("Enter the location Frost inventory amount: ");
-            int espressoInventory = _validate.ValidateInt("Enter the location Espresso inventory amount: ");
+            int numOfProducts = _productBL.GetAllProducts().Count;
             try
             {
-                Location newLocation = new Location(name, address, city, state, mochaInventory, frostInventory, espressoInventory);
+                Location newLocation = new Location(name, address, city, state, numOfProducts, new List<int>());
                 Location createdLocation = _locationBL.AddLocation(newLocation);
                 Console.WriteLine("New Location Created");
                 Console.WriteLine(createdLocation.ToString());
@@ -169,10 +167,17 @@ namespace StoreUI
 
         private void ViewInventory() {
             string name = _validate.ValidateString("Enter name of store you want to view");
+            List<Product> products = _productBL.GetAllProducts();
+            int i = 0;
             try
             {
+                // First index is numOfProducts
                 List<int> inventory = _locationBL.GetStoreInventory(name);
-                Console.WriteLine($"\nMocha: {inventory[0]} \nFrost: {inventory[1]} \nEspresso: {inventory[2]}");
+                foreach (Product product in products)
+                {
+                    Console.WriteLine($"{product.ItemName}: {inventory[i]}");
+                    i++;
+                }
             }
             catch (Exception ex)
             {
@@ -194,15 +199,22 @@ namespace StoreUI
         
         private void ReplenishInventory() {
             string name = _validate.ValidateString("Enter name of store you want to replenish");
-            int mochaInventory = _validate.ValidateInt("Enter the amount to add to Mocha inventory: ");
-            int frostInventory = _validate.ValidateInt("Enter the amount to add to Frost inventory: ");
-            int espressoInventory = _validate.ValidateInt("Enter the amount to add to Espresso inventory: ");
-            // TODO: Add new values to location inventory
+            List<Product> products = _productBL.GetAllProducts();
+            List<int> quantity = new List<int>();
+            int numOfProducts = products.Count;
+            int i = 0;
+            foreach (Product product in products)
+            {
+                quantity.Add(_validate.ValidateInt($"Enter quantity for {product.ItemName}"));
+            }
             try
             {
-                List<int> inventory = _locationBL.ReplenishInventory(name, mochaInventory, frostInventory, espressoInventory);
+                List<int> inventory = _locationBL.ReplenishInventory(name, numOfProducts, quantity);
                 Console.WriteLine($"{name} store inventory updated");
-                Console.WriteLine($"\nMocha: {inventory[0]} \nFrost: {inventory[1]} \nEspresso: {inventory[2]}");
+                foreach (Product product in products) {
+                    Console.WriteLine($"{product.ItemName}: {quantity[i]}");
+                    i++;
+                }
             }
             catch (Exception ex)
             {

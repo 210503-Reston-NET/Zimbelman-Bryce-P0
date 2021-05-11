@@ -82,10 +82,7 @@ namespace StoreUI
             }
         }
         private void PlaceOrder() {
-            Console.WriteLine("Enter the amount you would like to order of each product");
-            int mochaOrder = _validate.ValidateInt("Mocha: ");
-            int frostOrder = _validate.ValidateInt("Frost: ");
-            int espressoOrder = _validate.ValidateInt("Espresso: ");
+            // Implement place order
         }
     }
 }
