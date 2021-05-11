@@ -51,7 +51,7 @@ namespace StoreModels
         }
 
         public bool Equals(Customer customer) {
-            return this.Name.Equals(customer.Name) && this.Birthdate.Equals(customer.Birthdate) && this.PhoneNumber.Equals(customer.PhoneNumber) && this.Email.Equals(customer.Email) && this.MailAddress.Equals(customer.MailAddress);
+            return this.Name.Equals(customer.Name) && this.Birthdate.Equals(customer.Birthdate);
         }
     }
 }

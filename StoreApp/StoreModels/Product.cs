@@ -35,7 +35,7 @@ namespace StoreModels
         }
 
         public bool Equals(Product product) {
-            return this.ItemName.Equals(product.ItemName) && this.Price.Equals(product.Price) && this.Description.Equals(product.Description);
+            return this.ItemName.Equals(product.ItemName);
         }
     }
 }
