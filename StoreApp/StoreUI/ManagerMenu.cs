@@ -154,10 +154,11 @@ namespace StoreUI
         }
 
         private void SearchCustomer() {
-            string name = _validate.ValidateString("Enter name of customer you want to view");
+            string firstName = _validate.ValidateString("Enter first name of customer you want to view");
+            string lastName = _validate.ValidateString("Enter the last name of customer you want to view");
             try
             {
-                Customer customer = _customerBL.SearchCustomer(name);
+                Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 Console.WriteLine(customer.ToString());
             }
             catch (Exception ex)
