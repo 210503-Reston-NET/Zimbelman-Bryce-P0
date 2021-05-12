@@ -16,5 +16,10 @@ namespace StoreDL
         List<Product> GetAllProducts();
 
         Location ReplenishInventory(Location location);
+
+        Order AddOrder(Order order);
+        Order ViewOrder(Order order);
+        List<Order> GetCustomerOrders();
+        List<Order> GetAllOrders();
     }
 }

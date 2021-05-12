@@ -18,5 +18,9 @@ namespace StoreDL
         public static List<Product> Products = new List<Product>() {
             new Product("name", 1.99, "description")
         };
+
+        public static List<Order> Orders = new List<Order>() {
+            new Order(new Location("name", "address", "city", "state", 1, new List<int>()), 1.99, new List<Product>(), 1, new List<int>())
+        };
     }
 }

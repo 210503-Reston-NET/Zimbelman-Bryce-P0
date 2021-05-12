@@ -8,11 +8,15 @@ namespace StoreUI
     public class CustomerMenu : IMenu
     {
         private ICustomerBL _customerBL;
+        private IProductBL _productBL;
+        private IOrderBL _orderBL;
 
         private IValidationService _validate;
 
-        public CustomerMenu(ICustomerBL customerBL, IValidationService validate) {
+        public CustomerMenu(ICustomerBL customerBL, IProductBL productBL, IOrderBL orderBL,IValidationService validate) {
             _customerBL = customerBL;
+            _productBL = productBL;
+            _orderBL = orderBL;
             _validate = validate;
         }
 
@@ -42,7 +46,6 @@ namespace StoreUI
                         break;
 
                     case "2":
-                        // TODO: Add a customer
                         AddACustomer();
                         break;
                     
@@ -84,6 +87,16 @@ namespace StoreUI
         }
         private void PlaceOrder() {
             // Implement place order
+            List<Product> products = _productBL.GetAllProducts();
+            List<int> quantity = new List<int>();
+            string firstName = _validate.ValidateString("Enter first name: ");
+            string lastName = _validate.ValidateString("Enter last name: ");
+            Customer customer = _customerBL.SearchCustomer(firstName, lastName);
+            Console.WriteLine("Enter the amount desired of each item");
+            foreach (Product product in products) {
+                quantity.Add(_validate.ValidateInt($"{product.ItemName}: "));
+            }
+            
         }
     }
 }

@@ -20,6 +20,12 @@ namespace StoreDL
             return location;
         }
 
+        public Order AddOrder(Order order)
+        {
+            StoreSCStorage.Orders.Add(order);
+            return order;
+        }
+
         public Product AddProduct(Product product)
         {
             StoreSCStorage.Products.Add(product);
@@ -30,6 +36,11 @@ namespace StoreDL
             return StoreSCStorage.Customers;
         }
 
+        public List<Order> GetAllOrders()
+        {
+            return StoreSCStorage.Orders;
+        }
+
         public List<Product> GetAllProducts()
         {
             return StoreSCStorage.Products;
@@ -37,6 +48,11 @@ namespace StoreDL
 
         public Customer GetCustomer(Customer customer) {
             return StoreSCStorage.Customers.FirstOrDefault(custo => custo.Equals(customer));
+        }
+
+        public List<Order> GetCustomerOrders()
+        {
+            return StoreSCStorage.Orders;
         }
 
         public Location GetLocation(Location location)
@@ -57,6 +73,11 @@ namespace StoreDL
         public Location ReplenishInventory(Location location)
         {
             return StoreSCStorage.Locations.FirstOrDefault(loca => loca.Equals(location));
+        }
+
+        public Order ViewOrder(Order order)
+        {
+            return StoreSCStorage.Orders.FirstOrDefault(ord => ord.Equals(order));
         }
     }
 }
