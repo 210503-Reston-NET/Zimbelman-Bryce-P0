@@ -12,6 +12,6 @@ namespace StoreBL
 
          Location GetLocation(string name);
 
-         void SubtractInventory(Location location, List<int> quantity);
+         bool SubtractInventory(string name, List<int> quantity);
     }
 }

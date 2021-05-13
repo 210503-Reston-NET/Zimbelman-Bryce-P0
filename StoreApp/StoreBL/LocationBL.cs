@@ -96,14 +96,14 @@ namespace StoreBL
             }
         }
 
-        public void SubtractInventory(Location storeLocation, List<int> quantity)
+        public bool SubtractInventory(string name, List<int> quantity)
         {
             List<Location> locations = GetAllLocations();
             if (locations.Count == 0) {
                 throw new Exception ("No Locations Found");
             } else {
                 foreach (Location location in locations) {
-                    if (storeLocation.StoreName.Equals(location.StoreName)) {
+                    if (name.Equals(location.StoreName)) {
                         for (int i = 0; i <= location.NumOfProducts - 1; i++)
                         {
                             location.ProductQuantity[i] -= quantity[i];
@@ -112,6 +112,7 @@ namespace StoreBL
                             }
                         }
                         _repo.UpdateInventory(location);
+                        return true;
                     }
                 }
                 throw new Exception ("No matching locations found");

@@ -143,7 +143,7 @@ namespace StoreUI
                                 orderRepeat = false;
                                 try {
                                     Order newOrder = new Order(location, customer, lineItems, total, quantity);
-                                    _locationBL.SubtractInventory(location, quantity);
+                                    _locationBL.SubtractInventory(locationName, quantity);
                                     _orderBL.AddOrder(newOrder);
                                     Console.WriteLine("Order Sucessfully placed");
                                 } catch (Exception ex) {
