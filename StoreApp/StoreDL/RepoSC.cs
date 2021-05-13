@@ -70,7 +70,7 @@ namespace StoreDL
             return StoreSCStorage.Products.FirstOrDefault(prod => prod.Equals(product));
         }
 
-        public Location ReplenishInventory(Location location)
+        public Location UpdateInventory(Location location)
         {
             return StoreSCStorage.Locations.FirstOrDefault(loca => loca.Equals(location));
         }

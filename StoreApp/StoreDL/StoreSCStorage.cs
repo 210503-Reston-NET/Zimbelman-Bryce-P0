@@ -20,7 +20,7 @@ namespace StoreDL
         };
 
         public static List<Order> Orders = new List<Order>() {
-            new Order(new Location("name", "address", "city", "state", 1, new List<int>()), 1.99, new List<Product>(), 1, new List<int>())
+            new Order(new Location("name", "address", "city", "state", 1, new List<int>()), new Customer("firstName", "lastName", "birthdate", "phoneNumber", "email", "mailAddress"), new List<string>(), 1.99, new List<int>())
         };
     }
 }

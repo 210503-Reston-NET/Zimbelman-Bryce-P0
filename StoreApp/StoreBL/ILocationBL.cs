@@ -6,8 +6,12 @@ namespace StoreBL
     public interface ILocationBL
     {
          Location AddLocation(Location location);
-         List<Location> GetLocations();
+         List<Location> GetAllLocations();
          List<int> GetStoreInventory(string name);
          List<int> ReplenishInventory(string name, int numOfProducts, List<int> productQuantity);
+
+         Location GetLocation(string name);
+
+         void SubtractInventory(Location location, List<int> quantity);
     }
 }

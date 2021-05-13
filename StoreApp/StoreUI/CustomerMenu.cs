@@ -9,14 +9,16 @@ namespace StoreUI
     {
         private ICustomerBL _customerBL;
         private IProductBL _productBL;
+        private ILocationBL _locationBL;
         private IOrderBL _orderBL;
 
         private IValidationService _validate;
 
-        public CustomerMenu(ICustomerBL customerBL, IProductBL productBL, IOrderBL orderBL,IValidationService validate) {
+        public CustomerMenu(ICustomerBL customerBL, IProductBL productBL, IOrderBL orderBL, ILocationBL locationBL, IValidationService validate) {
             _customerBL = customerBL;
             _productBL = productBL;
             _orderBL = orderBL;
+            _locationBL = locationBL;
             _validate = validate;
         }
 
@@ -41,7 +43,6 @@ namespace StoreUI
                         break;
                     
                     case "1":
-                        // TODO: Place an order
                         PlaceOrder();
                         break;
 
@@ -89,13 +90,60 @@ namespace StoreUI
             // Implement place order
             List<Product> products = _productBL.GetAllProducts();
             List<int> quantity = new List<int>();
-            string firstName = _validate.ValidateString("Enter first name: ");
-            string lastName = _validate.ValidateString("Enter last name: ");
-            Customer customer = _customerBL.SearchCustomer(firstName, lastName);
-            Console.WriteLine("Enter the amount desired of each item");
-            foreach (Product product in products) {
-                quantity.Add(_validate.ValidateInt($"{product.ItemName}: "));
+            List<string> lineItems = new List<string>();
+            bool orderRepeat = true;
+            string locationName = _validate.ValidateString("Enter name of location to shop at: ");
+            try {
+                Location location = _locationBL.GetLocation(locationName);
+                string firstName = _validate.ValidateString("Enter first name: ");
+                string lastName = _validate.ValidateString("Enter last name: ");
+                try
+                {
+                    Customer customer = _customerBL.SearchCustomer(firstName, lastName);
+                    Console.WriteLine("Enter the amount desired of each item");
+                    foreach (Product product in products) {
+                        quantity.Add(_validate.ValidateInt($"{product.ItemName}: "));
+                        lineItems.Add(product.ItemName);
+                    }
+                    double total = _productBL.GetTotal(quantity);
+                    do
+                    {
+                        Console.WriteLine($"The total amount of your order will be ${total} \nWould you like to proceed? (Y/N)");
+                        string orderInput = Console.ReadLine();
+                        switch (orderInput)
+                        {
+                            case "Y":
+                                orderRepeat = false;
+                                try {
+                                    Order newOrder = new Order(location, customer, lineItems, total, quantity);
+                                    _orderBL.AddOrder(newOrder);
+                                    _locationBL.SubtractInventory(location, quantity);
+                                    Console.WriteLine("Order Sucessfully placed");
+                                } catch (Exception ex) {
+                                    Console.WriteLine(ex.Message);
+                                }
+                                break;
+
+                            case "N":
+                                orderRepeat = false;
+                                PlaceOrder();
+                                break;
+                    
+                            default:
+                                // Invalid Input
+                                Console.WriteLine("Please input a valid option");
+                                break;
+                        }
+                    } while (orderRepeat);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
             }
+
             
         }
     }

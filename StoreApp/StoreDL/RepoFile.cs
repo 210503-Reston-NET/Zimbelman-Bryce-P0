@@ -101,7 +101,7 @@ namespace StoreDL
             return JsonSerializer.Deserialize<List<Product>>(jsonString);
         }
 
-        public Location ReplenishInventory(Location location)
+        public Location UpdateInventory(Location location)
         {
             List<Location> locations = GetLocations();
             foreach (Location quantity in locations.ToList())

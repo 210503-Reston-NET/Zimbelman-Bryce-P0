@@ -26,5 +26,17 @@ namespace StoreBL
         {
             return _repo.GetAllProducts();
         }
+
+        public double GetTotal(List<int> quantity)
+        {
+            int i = 0;
+            double total = 0;
+            List<Product> products = GetAllProducts();
+            foreach (Product product in products) {
+                total += quantity[i] * product.Price;
+                i++;
+            }
+            return total;
+        }
     }
 }

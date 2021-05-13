@@ -26,14 +26,32 @@ namespace StoreBL
             return _repo.AddLocation(location);
         }
 
-        public List<Location> GetLocations()
+        public List<Location> GetAllLocations()
         {
             return _repo.GetLocations();
         }
 
+        public Location GetLocation(string name)
+        {
+            List<Location> locations = GetAllLocations();
+            if (locations.Count == 0) {
+                throw new Exception ("No Locations Found");
+            } else {
+                foreach (Location location in locations) {
+                    if (name.Equals(location.StoreName)) {
+                        return location;
+                    }
+                }
+                throw new Exception ("No matching locations found"); 
+                {
+                    
+                }
+            }
+        }
+
         public List<int> GetStoreInventory(string name)
         {
-            List<Location> locations = GetLocations();
+            List<Location> locations = GetAllLocations();
             if (locations.Count == 0) {
                 throw new Exception ("No Locations Found");
             } else {
@@ -54,7 +72,7 @@ namespace StoreBL
 
         public List<int> ReplenishInventory(string name, int numOfProducts, List<int> productQuantity)
         {
-            List<Location> locations = GetLocations();
+            List<Location> locations = GetAllLocations();
             if (locations.Count == 0) {
                 throw new Exception ("No Locations Found");
             } else {
@@ -65,13 +83,34 @@ namespace StoreBL
                         {
                             location.ProductQuantity[i] += productQuantity[i];
                         }
-                        _repo.ReplenishInventory(location);
+                        _repo.UpdateInventory(location);
                         return productQuantity;
                     } else if (name.Equals(location.StoreName)) {
                         location.NumOfProducts = numOfProducts;
                         location.ProductQuantity = productQuantity;
-                        _repo.ReplenishInventory(location);
+                        _repo.UpdateInventory(location);
                         return productQuantity;
+                    }
+                }
+                throw new Exception ("No matching locations found");
+            }
+        }
+
+        public void SubtractInventory(Location storeLocation, List<int> quantity)
+        {
+            List<Location> locations = GetAllLocations();
+            if (locations.Count == 0) {
+                throw new Exception ("No Locations Found");
+            } else {
+                foreach (Location location in locations) {
+                    if (storeLocation.StoreName.Equals(location.StoreName) && location.ProductQuantity.Any()) {
+                        for (int i = 0; i <= location.NumOfProducts - 1; i++)
+                        {
+                            location.ProductQuantity[i] -= quantity[i];
+                        }
+                        _repo.UpdateInventory(location);
+                    } else if (storeLocation.StoreName.Equals(location.StoreName)) {
+                        throw new Exception ("Not enough items in inventory!");
                     }
                 }
                 throw new Exception ("No matching locations found");

@@ -7,5 +7,6 @@ namespace StoreBL
     {
         Product AddProduct(Product product);
         List<Product> GetAllProducts();
+        double GetTotal(List<int> quantity);
     }
 }

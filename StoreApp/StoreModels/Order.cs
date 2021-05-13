@@ -12,10 +12,12 @@ namespace StoreModels
         /// </summary>
         /// <param name="location"></param>
         /// <param name="total"></param>
-        public Order(Location location, double total, List<Product> product, int numOfProduct, List<int> Quantity) {
+        public Order(Location location, Customer customer, List<string> lineItem, double total, List<int> quantity) {
             this.Location = location;
+            this.Customer = customer;
+            this.LineItem = lineItem;
             this.Total = total;
-            this.Product = product;
+            this.Quantity = quantity;
 
         }
 
@@ -30,19 +32,22 @@ namespace StoreModels
         /// </summary>
         /// <value></value>
         public Location Location { get; set; }
-        /// <summary>
-        /// This stores the product in an order
-        /// </summary>
-        /// <value></value>
-        public List<Product> Product { get; set; }
 
         /// <summary>
         /// This stores the total amount of an order
         /// </summary>
         /// <value></value>
-        
-        public int NumOfProduct { get; set; }
         public List<int> Quantity { get; set; }
+        /// <summary>
+        /// This stores the names of products ordered
+        /// </summary>
+        /// <value></value>
+        public List<string> LineItem { get; set; }
         public double Total { get; set; }
+
+        public override string ToString()
+        {
+            return $"Customer Name: {Customer.FirstName} {Customer.LastName} \nTotal {Total}";
+        }
     }
 }
