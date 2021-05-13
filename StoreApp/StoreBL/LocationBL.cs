@@ -77,7 +77,7 @@ namespace StoreBL
                 throw new Exception ("No Locations Found");
             } else {
                 foreach (Location location in locations) {
-                    if (name.Equals(location.StoreName) && location.ProductQuantity.Any()) {
+                    if (name.Equals(location.StoreName)) {
                         location.NumOfProducts = numOfProducts;
                         for (int i = 0; i <= location.NumOfProducts - 1; i++)
                         {
@@ -103,14 +103,15 @@ namespace StoreBL
                 throw new Exception ("No Locations Found");
             } else {
                 foreach (Location location in locations) {
-                    if (storeLocation.StoreName.Equals(location.StoreName) && location.ProductQuantity.Any()) {
+                    if (storeLocation.StoreName.Equals(location.StoreName)) {
                         for (int i = 0; i <= location.NumOfProducts - 1; i++)
                         {
                             location.ProductQuantity[i] -= quantity[i];
+                            if (location.ProductQuantity[i] < 0) {
+                                throw new Exception("Not enough items in inventory");
+                            }
                         }
                         _repo.UpdateInventory(location);
-                    } else if (storeLocation.StoreName.Equals(location.StoreName)) {
-                        throw new Exception ("Not enough items in inventory!");
                     }
                 }
                 throw new Exception ("No matching locations found");
