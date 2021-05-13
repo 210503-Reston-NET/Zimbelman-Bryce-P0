@@ -28,7 +28,7 @@ namespace StoreUI
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("[1] Place an order");
             Console.WriteLine("[2] Add a new customer");
-            Console.WriteLine("[3] Display order details");
+            Console.WriteLine("[3] Display placed order details");
             Console.WriteLine("[4] View order history");
             Console.WriteLine("[0] Go Back");
 
@@ -56,6 +56,7 @@ namespace StoreUI
                     
                     case "4":
                         // TODO: Display order history
+                        DisplayOrderHistory();
                         break;
 
                     default:
@@ -86,8 +87,34 @@ namespace StoreUI
                 Console.WriteLine(ex.Message);
             }
         }
+
+        private void DisplayOrderHistory() {
+            string firstName = _validate.ValidateString("Enter your first name: ");
+            string lastName = _validate.ValidateString("Enter your last name: ");
+            List<Product> products = _productBL.GetAllProducts();
+            List<string> productNames = new List<string>();
+            foreach (Product item in products) {
+                productNames.Add(item.ItemName);
+            }
+            try {
+                int i = 0;
+                List<Order> orders = _orderBL.GetCustomerOrders(firstName, lastName);
+                foreach (Order item in orders)
+                {
+                    Console.WriteLine(item.ToString());
+                    foreach (int product in item.Quantity)
+                    {
+                        Console.WriteLine($"{item.Quantity[i]} {productNames[i]}");
+                        i++;
+                    }
+                    double total = _productBL.GetTotal(item.Quantity);
+                    Console.WriteLine($"Order Total ${total}");
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            } 
+        }
         private void PlaceOrder() {
-            // Implement place order
             List<Product> products = _productBL.GetAllProducts();
             List<int> quantity = new List<int>();
             List<string> lineItems = new List<string>();
@@ -95,8 +122,8 @@ namespace StoreUI
             string locationName = _validate.ValidateString("Enter name of location to shop at: ");
             try {
                 Location location = _locationBL.GetLocation(locationName);
-                string firstName = _validate.ValidateString("Enter first name: ");
-                string lastName = _validate.ValidateString("Enter last name: ");
+                string firstName = _validate.ValidateString("Enter your first name: ");
+                string lastName = _validate.ValidateString("Enter your last name: ");
                 try
                 {
                     Customer customer = _customerBL.SearchCustomer(firstName, lastName);

@@ -19,7 +19,6 @@ namespace StoreDL
 
         Order AddOrder(Order order);
         Order ViewOrder(Order order);
-        List<Order> GetCustomerOrders();
         List<Order> GetAllOrders();
     }
 }

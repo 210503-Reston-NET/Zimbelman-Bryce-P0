@@ -47,7 +47,7 @@ namespace StoreModels
 
         public override string ToString()
         {
-            return $"Customer Name: {Customer.FirstName} {Customer.LastName} \nTotal {Total}";
+            return $"Customer Name: {Customer.FirstName} {Customer.LastName} \nLocation Name: {Location.StoreName}";
         }
     }
 }

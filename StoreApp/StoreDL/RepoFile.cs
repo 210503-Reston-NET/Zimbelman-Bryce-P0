@@ -130,11 +130,6 @@ namespace StoreDL
             throw new NotImplementedException();
         }
 
-        public List<Order> GetCustomerOrders()
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Order> GetAllOrders()
         {
             try {
