@@ -6,19 +6,19 @@ namespace StoreModels
     /// </summary>
     public class LineItem
     {
-        public LineItem(string productName, int quantity, int orderID) {
-            this.ProductName = productName;
+        public LineItem(Product product, int quantity, int orderID) {
+            this.Product = product;
             this.Quantity = quantity;
             this.OrderID = orderID;
         }
 
-        public string ProductName { get; set; }
+        public Product Product { get; set; }
         public int Quantity { get; set; }
         public int OrderID { get; set; }
 
         public override string ToString()
         {
-            return $"{Quantity} {ProductName}";
+            return $"{Quantity} {Product.ItemName}";
         }
     }
 }

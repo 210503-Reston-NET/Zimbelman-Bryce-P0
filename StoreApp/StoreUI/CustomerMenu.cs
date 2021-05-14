@@ -134,7 +134,7 @@ namespace StoreUI
                     foreach (Product item in products)
                     {
                         quantity.Add(_validate.ValidateInt($"{item.ItemName}: "));
-                        LineItem lineItem = new LineItem(item.ItemName, quantity[i], orderID);
+                        LineItem lineItem = new LineItem(item, quantity[i], orderID);
                         _lineItemBL.AddLineItem(lineItem);
                         i++;
                     }

@@ -106,9 +106,18 @@ namespace StoreDL
         public Inventory UpdateInventory(Inventory inventory)
         {
             List<Inventory> inventories = GetAllInventories();
+            if (!inventories.Any()) {
+                jsonString = JsonSerializer.Serialize(inventory);
+                File.WriteAllText(inventoryFilePath, jsonString);
+            } else if (inventories.Count() < 3) {
+                List<Inventory> inventoriesFromFile = GetAllInventories();
+                inventoriesFromFile.Add(inventory);
+                jsonString = JsonSerializer.Serialize(inventoriesFromFile);
+                File.WriteAllText(inventoryFilePath, jsonString);
+            }
             foreach (Inventory inven in inventories)
             {
-                if (inventory.Location.StoreName.Equals(inven.Location.StoreName)) {
+                if (inventory.Location.StoreName.Equals(inven.Location.StoreName) && inventory.Product.ItemName.Equals(inven.Product.ItemName)) {
                     inventories.Remove(inven);
                     inventories.Add(inventory);
                     jsonString = JsonSerializer.Serialize(inventories);
