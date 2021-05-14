@@ -14,10 +14,10 @@ namespace StoreUI
                     return new MainMenu();
 
                     case "customer":
-                        return new CustomerMenu(new CustomerBL(new RepoFile()), new ProductBL(new RepoFile()), new OrderBL(new RepoFile()), new LocationBL(new RepoFile()), new LineItemBL(new RepoFile()), new ValidationService());
+                        return new CustomerMenu(new CustomerBL(new RepoFile()), new ProductBL(new RepoFile()), new OrderBL(new RepoFile()), new LocationBL(new RepoFile()), new LineItemBL(new RepoFile()), new InventoryBL(new RepoFile()), new ValidationService());
 
                     case "manager":
-                        return new ManagerMenu(new CustomerBL(new RepoFile()), new LocationBL(new RepoFile()), new ProductBL(new RepoFile()), new ValidationService());
+                        return new ManagerMenu(new CustomerBL(new RepoFile()), new LocationBL(new RepoFile()), new ProductBL(new RepoFile()), new InventoryBL(new RepoFile()), new ValidationService());
 
                 default:
                     return null;

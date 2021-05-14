@@ -42,6 +42,11 @@ namespace StoreDL
             return StoreSCStorage.Customers;
         }
 
+        public List<Inventory> GetAllInventories()
+        {
+            return StoreSCStorage.Inventories;
+        }
+
         public List<LineItem> GetAllLineItems()
         {
             return StoreSCStorage.LineItems;
@@ -76,7 +81,7 @@ namespace StoreDL
             return StoreSCStorage.Locations.FirstOrDefault(loca => loca.Equals(location));
         }
 
-        public List<Location> GetLocations()
+        public List<Location> GetAllLocations()
         {
             return StoreSCStorage.Locations;
         }
@@ -86,9 +91,9 @@ namespace StoreDL
             return StoreSCStorage.Products.FirstOrDefault(prod => prod.Equals(product));
         }
 
-        public Location UpdateInventory(Location location)
+        public Inventory UpdateInventory(Inventory inventory)
         {
-            return StoreSCStorage.Locations.FirstOrDefault(loca => loca.Equals(location));
+            return StoreSCStorage.Inventories.FirstOrDefault(inven => inven.Equals(inventory));
         }
 
         public Order ViewOrder(Order order)

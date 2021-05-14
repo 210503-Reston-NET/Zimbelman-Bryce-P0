@@ -10,12 +10,14 @@ namespace StoreDL
 
         Location AddLocation(Location location);
         Location GetLocation(Location location);
-        List<Location> GetLocations();
+        List<Location> GetAllLocations();
         Product AddProduct(Product product);
         Product GetProduct(Product product);
         List<Product> GetAllProducts();
 
-        Location UpdateInventory(Location location);
+        Inventory UpdateInventory(Inventory inventory);
+
+        List<Inventory> GetAllInventories();
 
         Order AddOrder(Order order);
         Order ViewOrder(Order order);

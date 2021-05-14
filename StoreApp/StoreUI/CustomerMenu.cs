@@ -12,15 +12,17 @@ namespace StoreUI
         private ILocationBL _locationBL;
         private IOrderBL _orderBL;
         private ILineItemBL _lineItemBL;
+        private IInventoryBL _inventoryBL;
 
         private IValidationService _validate;
 
-        public CustomerMenu(ICustomerBL customerBL, IProductBL productBL, IOrderBL orderBL, ILocationBL locationBL, ILineItemBL lineItemBL, IValidationService validate) {
+        public CustomerMenu(ICustomerBL customerBL, IProductBL productBL, IOrderBL orderBL, ILocationBL locationBL, ILineItemBL lineItemBL, IInventoryBL inventoryBL, IValidationService validate) {
             _customerBL = customerBL;
             _productBL = productBL;
             _orderBL = orderBL;
             _locationBL = locationBL;
             _lineItemBL = lineItemBL;
+            _inventoryBL = inventoryBL;
             _validate = validate;
         }
 
@@ -147,7 +149,7 @@ namespace StoreUI
                                 orderRepeat = false;
                                 try {
                                     Order newOrder = new Order(location, customer, orderID, total);
-                                    _locationBL.SubtractInventory(locationName, quantity);
+                                    _inventoryBL.SubtractInventory(locationName, quantity);
                                     _orderBL.AddOrder(newOrder);
                                     Console.WriteLine("Order Sucessfully placed");
                                 } catch (Exception ex) {

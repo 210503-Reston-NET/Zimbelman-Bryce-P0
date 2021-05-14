@@ -7,11 +7,6 @@ namespace StoreBL
     {
          Location AddLocation(Location location);
          List<Location> GetAllLocations();
-         List<int> GetStoreInventory(string name);
-         List<int> ReplenishInventory(string name, int numOfProducts, List<int> productQuantity);
-
-         Location GetLocation(string name);
-
-         List<int> SubtractInventory(string name, List<int> quantity);
+         Location GetLocation(string name);    
     }
 }

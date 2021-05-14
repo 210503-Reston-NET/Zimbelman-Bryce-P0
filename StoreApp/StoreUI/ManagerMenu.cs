@@ -11,13 +11,15 @@ namespace StoreUI
 
         private ILocationBL _locationBL;
         private IProductBL _productBL;
+        private IInventoryBL _inventoryBL;
 
         private IValidationService _validate;
 
-        public ManagerMenu(ICustomerBL customerBL, ILocationBL locationBL, IProductBL productBL,IValidationService validate) {
+        public ManagerMenu(ICustomerBL customerBL, ILocationBL locationBL, IProductBL productBL, IInventoryBL inventoryBL,IValidationService validate) {
             _customerBL = customerBL;
             _locationBL = locationBL;
             _productBL = productBL;
+            _inventoryBL = inventoryBL;
             _validate = validate;
         }
 
@@ -170,15 +172,13 @@ namespace StoreUI
         private void ViewInventory() {
             string name = _validate.ValidateString("Enter name of store you want to view");
             List<Product> products = _productBL.GetAllProducts();
-            int i = 0;
             try
             {
                 // First index is numOfProducts
-                List<int> inventory = _locationBL.GetStoreInventory(name);
+                Inventory inventory = _inventoryBL.GetStoreInventory(name);
                 foreach (Product product in products)
                 {
-                    Console.WriteLine($"{product.ItemName}: {inventory[i]}");
-                    i++;
+                    Console.WriteLine($"{product.ItemName}: {inventory.Quantity}");
                 }
             }
             catch (Exception ex)
@@ -211,7 +211,7 @@ namespace StoreUI
             }
             try
             {
-                List<int> inventory = _locationBL.ReplenishInventory(name, numOfProducts, quantity);
+                List<int> inventory = _inventoryBL.ReplenishInventory(name, numOfProducts, quantity);
                 Console.WriteLine($"{name} store inventory updated");
                 foreach (Product product in products) {
                     Console.WriteLine($"{product.ItemName}: {inventory[i]}");

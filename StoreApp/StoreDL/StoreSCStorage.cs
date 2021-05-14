@@ -26,5 +26,9 @@ namespace StoreDL
         public static List<LineItem> LineItems = new List<LineItem>() {
             new LineItem("productName", 1, 1)
         };
+
+        public static List<Inventory> Inventories = new List<Inventory>() {
+            new Inventory(new Location("name", "address", "city", "state", 1, new List<int>()), new Product("name", 1.99, "description"), 1)
+        };
     }
 }

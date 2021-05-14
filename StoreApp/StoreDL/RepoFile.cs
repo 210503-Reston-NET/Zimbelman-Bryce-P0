@@ -18,6 +18,7 @@ namespace StoreDL
         private const string productFilePath = "../StoreDL/Products.json";
         private const string orderFilePath = "../StoreDL/Orders.json";
         private const string lineItemFilePath = "../StoreDL/LineItems.json";
+        private const string inventoryFilePath = "../StoreDL/Inventory.json";
 
         /// <summary>
         /// Hold string versions of my objects
@@ -45,7 +46,7 @@ namespace StoreDL
             return JsonSerializer.Deserialize<List<Customer>>(jsonString);
         }
 
-        public List<Location> GetLocations() {
+        public List<Location> GetAllLocations() {
             try {
                 jsonString = File.ReadAllText(locationFilePath);
             }
@@ -63,7 +64,7 @@ namespace StoreDL
 
         public Location AddLocation(Location location)
         {
-            List<Location> locationsFromFile = GetLocations();
+            List<Location> locationsFromFile = GetAllLocations();
             locationsFromFile.Add(location);
             jsonString = JsonSerializer.Serialize(locationsFromFile);
             File.WriteAllText(locationFilePath, jsonString);
@@ -72,7 +73,7 @@ namespace StoreDL
 
         public Location GetLocation(Location location)
         {
-            return GetLocations().FirstOrDefault(loca => loca.Equals(location));
+            return GetAllLocations().FirstOrDefault(loca => loca.Equals(location));
         }
 
         public Product AddProduct(Product product)
@@ -102,19 +103,19 @@ namespace StoreDL
             return JsonSerializer.Deserialize<List<Product>>(jsonString);
         }
 
-        public Location UpdateInventory(Location location)
+        public Inventory UpdateInventory(Inventory inventory)
         {
-            List<Location> locations = GetLocations();
-            foreach (Location quantity in locations.ToList())
+            List<Inventory> inventories = GetAllInventories();
+            foreach (Inventory inven in inventories)
             {
-                if (location.StoreName.Equals(quantity.StoreName)) {
-                    locations.Remove(quantity);
-                    locations.Add(location);
-                    jsonString = JsonSerializer.Serialize(locations);
+                if (inventory.Location.StoreName.Equals(inven.Location.StoreName)) {
+                    inventories.Remove(inven);
+                    inventories.Add(inventory);
+                    jsonString = JsonSerializer.Serialize(inventories);
                     File.WriteAllText(locationFilePath, jsonString);
                 }
             }
-            return location;
+            return inventory;
         }
 
         public Order AddOrder(Order order)
@@ -168,6 +169,20 @@ namespace StoreDL
         public LineItem GetLineItem(LineItem lineItem)
         {
             return GetAllLineItems().FirstOrDefault(li => li.Equals(lineItem));
+        }
+
+        public List<Inventory> GetAllInventories()
+        {
+            try
+            {
+                jsonString = File.ReadAllText(inventoryFilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<Inventory>();
+            }
+            return JsonSerializer.Deserialize<List<Inventory>>(jsonString);
         }
     }
 }
