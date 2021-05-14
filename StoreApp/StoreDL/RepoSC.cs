@@ -14,6 +14,12 @@ namespace StoreDL
             return customer;
         }
 
+        public LineItem AddLineItem(LineItem lineItem)
+        {
+            StoreSCStorage.LineItems.Add(lineItem);
+            return lineItem;
+        }
+
         public Location AddLocation(Location location)
         {
             StoreSCStorage.Locations.Add(location);
@@ -36,6 +42,11 @@ namespace StoreDL
             return StoreSCStorage.Customers;
         }
 
+        public List<LineItem> GetAllLineItems()
+        {
+            return StoreSCStorage.LineItems;
+        }
+
         public List<Order> GetAllOrders()
         {
             return StoreSCStorage.Orders;
@@ -53,6 +64,11 @@ namespace StoreDL
         public List<Order> GetCustomerOrders()
         {
             return StoreSCStorage.Orders;
+        }
+
+        public LineItem GetLineItem(LineItem lineItem)
+        {
+            return StoreSCStorage.LineItems.FirstOrDefault(li => li.Equals(lineItem));
         }
 
         public Location GetLocation(Location location)

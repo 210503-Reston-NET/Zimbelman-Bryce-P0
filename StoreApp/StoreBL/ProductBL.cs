@@ -29,13 +29,15 @@ namespace StoreBL
 
         public double GetTotal(List<int> quantity)
         {
+            List<Product> products = GetAllProducts();
             int i = 0;
             double total = 0;
-            List<Product> products = GetAllProducts();
-            foreach (Product product in products) {
-                total += quantity[i] * product.Price;
+            foreach (Product item in products)
+            {
+                total += quantity[i] * item.Price;
                 i++;
             }
+            total = Math.Round(total, 2);
             return total;
         }
     }

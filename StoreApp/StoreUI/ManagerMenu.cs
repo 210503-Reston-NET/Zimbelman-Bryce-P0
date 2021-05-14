@@ -214,7 +214,7 @@ namespace StoreUI
                 List<int> inventory = _locationBL.ReplenishInventory(name, numOfProducts, quantity);
                 Console.WriteLine($"{name} store inventory updated");
                 foreach (Product product in products) {
-                    Console.WriteLine($"{product.ItemName}: {quantity[i]}");
+                    Console.WriteLine($"{product.ItemName}: {inventory[i]}");
                     i++;
                 }
             }

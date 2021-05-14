@@ -8,5 +8,6 @@ namespace StoreBL
          Order AddOrder(Order order);
 
          Order ViewOrder(Order order);
+         List<Order> GetAllOrders();
     }
 }

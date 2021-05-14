@@ -84,19 +84,14 @@ namespace StoreBL
                             location.ProductQuantity[i] += productQuantity[i];
                         }
                         _repo.UpdateInventory(location);
-                        return productQuantity;
-                    } else if (name.Equals(location.StoreName)) {
-                        location.NumOfProducts = numOfProducts;
-                        location.ProductQuantity = productQuantity;
-                        _repo.UpdateInventory(location);
-                        return productQuantity;
+                        return location.ProductQuantity;
                     }
                 }
                 throw new Exception ("No matching locations found");
             }
         }
 
-        public bool SubtractInventory(string name, List<int> quantity)
+        public List<int> SubtractInventory(string name, List<int> quantity)
         {
             List<Location> locations = GetAllLocations();
             if (locations.Count == 0) {
@@ -112,7 +107,7 @@ namespace StoreBL
                             }
                         }
                         _repo.UpdateInventory(location);
-                        return true;
+                        return location.ProductQuantity;
                     }
                 }
                 throw new Exception ("No matching locations found");

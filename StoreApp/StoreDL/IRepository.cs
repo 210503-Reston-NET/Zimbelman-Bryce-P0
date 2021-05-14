@@ -20,5 +20,8 @@ namespace StoreDL
         Order AddOrder(Order order);
         Order ViewOrder(Order order);
         List<Order> GetAllOrders();
+        List<LineItem> GetAllLineItems();
+        LineItem AddLineItem(LineItem lineItem);
+        LineItem GetLineItem(LineItem lineItem);
     }
 }

@@ -20,6 +20,11 @@ namespace StoreBL
             return _repo.AddOrder(order);
         }
 
+        public List<Order> GetAllOrders()
+        {
+            return _repo.GetAllOrders();
+        }
+
         public List<Order> GetCustomerOrders(string firstName, string lastName)
         {
             List<Order> orders = _repo.GetAllOrders();

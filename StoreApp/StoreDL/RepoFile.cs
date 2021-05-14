@@ -17,6 +17,7 @@ namespace StoreDL
         private const string locationFilePath = "../StoreDL/Locations.json";
         private const string productFilePath = "../StoreDL/Products.json";
         private const string orderFilePath = "../StoreDL/Orders.json";
+        private const string lineItemFilePath = "../StoreDL/LineItems.json";
 
         /// <summary>
         /// Hold string versions of my objects
@@ -141,6 +142,32 @@ namespace StoreDL
                 return new List<Order>();
             }
             return JsonSerializer.Deserialize<List<Order>>(jsonString);
+        }
+
+        public List<LineItem> GetAllLineItems()
+        {
+            try {
+                jsonString = File.ReadAllText(lineItemFilePath);
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return new List<LineItem>();
+            }
+            return JsonSerializer.Deserialize<List<LineItem>>(jsonString);
+        }
+
+        public LineItem AddLineItem(LineItem lineItem)
+        {
+            List<LineItem> lineItemsFromFile = GetAllLineItems();
+            lineItemsFromFile.Add(lineItem);
+            jsonString = JsonSerializer.Serialize(lineItemsFromFile);
+            File.WriteAllText(lineItemFilePath, jsonString);
+            return lineItem;
+        }
+
+        public LineItem GetLineItem(LineItem lineItem)
+        {
+            return GetAllLineItems().FirstOrDefault(li => li.Equals(lineItem));
         }
     }
 }
