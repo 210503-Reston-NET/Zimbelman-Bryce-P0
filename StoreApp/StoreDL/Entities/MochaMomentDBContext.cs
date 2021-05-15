@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace StoreDL.Entities
 {
-    public partial class MochaMomentContext : DbContext
+    public partial class MochaMomentDBContext : DbContext
     {
-        public MochaMomentContext()
+        public MochaMomentDBContext()
         {
         }
 
-        public MochaMomentContext(DbContextOptions<MochaMomentContext> options)
+        public MochaMomentDBContext(DbContextOptions<MochaMomentDBContext> options)
             : base(options)
         {
         }
