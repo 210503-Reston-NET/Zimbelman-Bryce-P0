@@ -129,7 +129,7 @@ namespace StoreUI
             int numOfProducts = _productBL.GetAllProducts().Count;
             try
             {
-                Location newLocation = new Location(name, address, city, state, numOfProducts);
+                Location newLocation = new Location(name, address, city, state);
                 Location createdLocation = _locationBL.AddLocation(newLocation);
                 Console.WriteLine("New Location Created");
                 Console.WriteLine(createdLocation.ToString());

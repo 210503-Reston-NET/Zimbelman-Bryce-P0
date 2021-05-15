@@ -12,7 +12,7 @@ namespace StoreDL
         };
 
         public static List<Location> Locations = new List<Location>() {
-            new Location("name", "address", "city", "state", 1)
+            new Location("name", "address", "city", "state")
         };
 
         public static List<Product> Products = new List<Product>() {
@@ -20,7 +20,7 @@ namespace StoreDL
         };
 
         public static List<Order> Orders = new List<Order>() {
-            new Order(new Location("name", "address", "city", "state", 1), new Customer("firstName", "lastName", "birthdate", "phoneNumber", "email", "mailAddress"), 1, 1.99)
+            new Order(new Location("name", "address", "city", "state"), new Customer("firstName", "lastName", "birthdate", "phoneNumber", "email", "mailAddress"), 1, 1.99)
         };
 
         public static List<LineItem> LineItems = new List<LineItem>() {
@@ -28,7 +28,7 @@ namespace StoreDL
         };
 
         public static List<Inventory> Inventories = new List<Inventory>() {
-            new Inventory(new Location("name", "address", "city", "state", 1), new Product("name", 1.99, "description"), 1)
+            new Inventory(new Location("name", "address", "city", "state"), new Product("name", 1.99, "description"), 1)
         };
     }
 }

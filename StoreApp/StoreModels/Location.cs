@@ -6,12 +6,11 @@ namespace StoreModels
     /// </summary>
     public class Location
     {
-        public Location(string storeName, string address, string city, string state, int numOfProducts) {
+        public Location(string storeName, string address, string city, string state) {
             this.StoreName = storeName;
             this.Address = address;
             this.City = city;
             this.State = state;
-            this.NumOfProducts = numOfProducts;
         }
 
         /// <summary>
@@ -38,7 +37,6 @@ namespace StoreModels
         /// <value></value>
         public string StoreName { get; set; }
 
-        public int NumOfProducts { get; set; }
 
         public override string ToString()
         {
