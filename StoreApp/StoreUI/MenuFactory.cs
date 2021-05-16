@@ -29,10 +29,10 @@ namespace StoreUI
                     return new MainMenu();
 
                     case "customer":
-                        return new CustomerMenu(new CustomerBL(new RepoDB(context)), new ProductBL(new RepoDB(context)), new OrderBL(new RepoDB(context)), new LocationBL(new RepoDB(context)), new LineItemBL(new RepoDB(context)), new InventoryBL(new RepoDB(context), new LocationBL(new RepoDB(context))), new ValidationService());
+                        return new CustomerMenu(new CustomerBL(new RepoDB(context)), new ProductBL(new RepoDB(context)), new OrderBL(new RepoDB(context)), new LocationBL(new RepoDB(context)), new LineItemBL(new RepoDB(context)), new InventoryBL(new RepoDB(context), new LocationBL(new RepoDB(context)), new ProductBL(new RepoDB(context))), new ValidationService());
 
                     case "manager":
-                        return new ManagerMenu(new CustomerBL(new RepoDB(context)), new LocationBL(new RepoDB(context)), new ProductBL(new RepoDB(context)), new InventoryBL(new RepoDB(context), new LocationBL(new RepoDB(context))), new ValidationService());
+                        return new ManagerMenu(new CustomerBL(new RepoDB(context)), new LocationBL(new RepoDB(context)), new ProductBL(new RepoDB(context)), new InventoryBL(new RepoDB(context), new LocationBL(new RepoDB(context)), new ProductBL(new RepoDB(context))), new ValidationService());
 
                 default:
                     return null;

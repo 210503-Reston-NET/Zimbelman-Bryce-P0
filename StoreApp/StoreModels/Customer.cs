@@ -16,6 +16,16 @@ namespace StoreModels
             this.Email = email;
             this.MailAddress = mailAddress;
         }
+
+        public Customer(int id, string firstName, string lastName, string birthdate, string phoneNumber, string email, string mailAddress) : this(firstName, lastName, birthdate, phoneNumber, email, mailAddress) {
+            this.Id = id;
+        }
+
+            /// <summary>
+            /// This represents a unique value for every customer
+            /// </summary>
+            /// <value></value>
+        public int Id { get; set; }
         /// <summary>
         /// This describes the first name of the customer
         /// </summary>

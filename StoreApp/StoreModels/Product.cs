@@ -11,6 +11,12 @@ namespace StoreModels
                 this.Price = price;
                 this.Description = description;
         }
+
+        public Product(int id, string itemName, double price, string description) : this(itemName, price, description) {
+            this.Id = id;
+        }
+
+        public int Id { get; set; }
         /// <summary>
         /// This stores the name of the item
         /// </summary>

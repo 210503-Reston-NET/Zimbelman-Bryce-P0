@@ -13,6 +13,11 @@ namespace StoreModels
             this.State = state;
         }
 
+        public Location(int id, string storeName, string address, string city, string state) : this(storeName, address, city, state) {
+            this.Id = id;
+        }
+
+        public int Id { get; set; }
         /// <summary>
         /// This contains the street address of a store location
         /// </summary>

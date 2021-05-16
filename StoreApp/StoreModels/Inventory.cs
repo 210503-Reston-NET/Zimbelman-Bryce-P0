@@ -13,7 +13,16 @@ namespace StoreModels
             this.Product = product;
             this.Quantity = quantity;
         }
+
+        public Inventory(int id,Location location, Product product, int quantity) : this(location, product, quantity) {
+            this.Id = id;
+        }
         
+        /// <summary>
+        /// This represents a unique value for every inventory
+        /// </summary>
+        /// <value></value>
+        public int Id { get; set; }
         public Location Location { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }

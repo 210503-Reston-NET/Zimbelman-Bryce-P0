@@ -12,6 +12,11 @@ namespace StoreModels
             this.OrderID = orderID;
         }
 
+        public LineItem(int id, Product product, int quantity, int orderID) : this(product, quantity, orderID) {
+            this.Id = id;
+        }
+
+        public int Id { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
         public int OrderID { get; set; }

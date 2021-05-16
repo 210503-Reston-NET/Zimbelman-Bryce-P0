@@ -4,7 +4,7 @@ namespace StoreBL
 {
     public interface ILineItemBL
     {
-         LineItem AddLineItem(LineItem lineItem);
+         LineItem AddLineItem(LineItem lineItem, Product product);
          List<LineItem> GetAllLineItems();
          List<LineItem> GetLineItems(int orderID);
     }

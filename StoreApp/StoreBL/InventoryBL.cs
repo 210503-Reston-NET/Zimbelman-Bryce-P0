@@ -10,9 +10,11 @@ namespace StoreBL
     {
         private IRepository _repo;
         private ILocationBL _locationBL;
-        public InventoryBL(IRepository repo, ILocationBL locationBL) {
+        private IProductBL _productBL;
+        public InventoryBL(IRepository repo, ILocationBL locationBL, IProductBL productBL) {
             _repo = repo;
             _locationBL = locationBL;
+            _productBL = productBL;
         }
         public Inventory GetStoreInventory(string nameOfStore)
         {
@@ -35,20 +37,22 @@ namespace StoreBL
             List<Inventory> inventories = _repo.GetAllInventories();
             List<Product> products = _repo.GetAllProducts();
             List<int> updatedInventory = new List<int>();
+            Location location = _locationBL.GetLocation(nameOfStore);
+            // TODO: Figure out way to remove Product from inventory model and work it out in BL.
             foreach (Product item in products)
             {
                 if (inventories.Count < numOfProducts) {
-                    Location location = _locationBL.GetLocation(nameOfStore);
                     Inventory newInventory = new Inventory(location, item, productQuantity[i]);
+                    
                     i++;
-                    _repo.UpdateInventory(newInventory);
+                    _repo.UpdateInventory(newInventory, location, item);
                 } else {
                     foreach (Inventory inventory in inventories) {
-                        if (nameOfStore.Equals(inventory.Location.StoreName) && inventory.Product.ItemName.Equals(item.ItemName)) {
+                        if (nameOfStore.Equals(location.StoreName) && inventory.Product.ItemName.Equals(item.ItemName)) {
                             inventory.Quantity += productQuantity[i];
                             updatedInventory.Add(inventory.Quantity);
                             i++;
-                            _repo.UpdateInventory(inventory);
+                            _repo.UpdateInventory(inventory, location, item);
                             }
                         }
                     }
@@ -66,6 +70,7 @@ namespace StoreBL
             List<Inventory> inventories = _repo.GetAllInventories();
             List<Product> products = _repo.GetAllProducts();
             List<int> updatedInventory = new List<int>();
+            Location location = _locationBL.GetLocation(nameOfStore);
             foreach (Product item in products)
             {
                 foreach (Inventory inventory in inventories) {
@@ -73,7 +78,7 @@ namespace StoreBL
                         inventory.Quantity -= productQuantity[i];
                         updatedInventory.Add(inventory.Quantity);
                         i++;
-                        _repo.UpdateInventory(inventory);
+                        _repo.UpdateInventory(inventory, location, item);
                         }
                     }
                 }

@@ -15,9 +15,9 @@ namespace StoreBL
         public OrderBL(IRepository repo) {
             _repo = repo;
         }
-        public Order AddOrder(Order order)
+        public Order AddOrder(Order order, Location location, Customer customer)
         {
-            return _repo.AddOrder(order);
+            return _repo.AddOrder(order, location, customer);
         }
 
         public List<Order> GetAllOrders()
@@ -44,7 +44,7 @@ namespace StoreBL
 
         public Order ViewOrder(Order order)
         {
-            return _repo.ViewOrder(order);
+            return _repo.GetOrder(order);
         }
     }
 }

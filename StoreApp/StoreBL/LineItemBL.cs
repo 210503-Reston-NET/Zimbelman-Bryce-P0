@@ -16,9 +16,9 @@ namespace StoreBL
         public LineItemBL(IRepository repo) {
             _repo = repo;
         }
-        public LineItem AddLineItem(LineItem lineItem)
+        public LineItem AddLineItem(LineItem lineItem, Product product)
         {
-            return _repo.AddLineItem(lineItem);
+            return _repo.AddLineItem(lineItem, product);
         }
 
         public List<LineItem> GetAllLineItems()

@@ -135,7 +135,7 @@ namespace StoreUI
                     {
                         quantity.Add(_validate.ValidateInt($"{item.ItemName}: "));
                         LineItem lineItem = new LineItem(item, quantity[i], orderID);
-                        _lineItemBL.AddLineItem(lineItem);
+                        _lineItemBL.AddLineItem(lineItem, item);
                         i++;
                     }
                     double total = _productBL.GetTotal(quantity);
@@ -150,7 +150,7 @@ namespace StoreUI
                                 try {
                                     Order newOrder = new Order(location, customer, orderID, total);
                                     _inventoryBL.SubtractInventory(locationName, quantity);
-                                    _orderBL.AddOrder(newOrder);
+                                    _orderBL.AddOrder(newOrder, location, customer);
                                     Console.WriteLine("Order Sucessfully placed");
                                 } catch (Exception ex) {
                                     Console.WriteLine(ex.Message);

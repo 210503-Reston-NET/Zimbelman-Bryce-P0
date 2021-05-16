@@ -15,15 +15,17 @@ namespace StoreDL
         Product GetProduct(Product product);
         List<Product> GetAllProducts();
 
-        Inventory UpdateInventory(Inventory inventory);
+        Inventory UpdateInventory(Inventory inventory, Location location, Product product);
 
         List<Inventory> GetAllInventories();
 
-        Order AddOrder(Order order);
-        Order ViewOrder(Order order);
+        Inventory GetStoreInventory(Inventory inventory);
+
+        Order AddOrder(Order order, Location location, Customer customer);
+        Order GetOrder(Order order);
         List<Order> GetAllOrders();
         List<LineItem> GetAllLineItems();
-        LineItem AddLineItem(LineItem lineItem);
+        LineItem AddLineItem(LineItem lineItem, Product product);
         LineItem GetLineItem(LineItem lineItem);
     }
 }

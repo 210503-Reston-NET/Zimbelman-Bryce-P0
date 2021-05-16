@@ -17,9 +17,13 @@ namespace StoreModels
             this.Customer = customer;
             this.OrderID = orderID;
             this.Total = total;
-
         }
 
+        public Order(int id, Location location, Customer customer, int orderID, double total) : this(location, customer, orderID, total) {
+            this.Id = id;
+        }
+
+        public int Id { get; set; }
         /// <summary>
         /// This stores the customer information for an order
         /// </summary>
