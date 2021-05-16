@@ -170,12 +170,13 @@ namespace StoreUI
         }
 
         private void ViewInventory() {
-            string name = _validate.ValidateString("Enter name of store you want to view");
+            string storeName = _validate.ValidateString("Enter name of store you want to view");
+            Location location = _locationBL.GetLocation(storeName);
             List<Product> products = _productBL.GetAllProducts();
             try
             {
                 // First index is numOfProducts
-                Inventory inventory = _inventoryBL.GetStoreInventory(name);
+                Inventory inventory = _inventoryBL.GetStoreInventory(location.Id);
                 foreach (Product product in products)
                 {
                     Console.WriteLine($"{product.ItemName}: {inventory.Quantity}");

@@ -28,7 +28,7 @@ namespace StoreDL
         };
 
         public static List<Inventory> Inventories = new List<Inventory>() {
-            new Inventory(new Location("name", "address", "city", "state"), new Product("name", 1.99, "description"), 1)
+            new Inventory(1, 1, 1)
         };
     }
 }

@@ -7,6 +7,6 @@ namespace StoreBL
          List<int> ReplenishInventory(string nameOfStore, int numOfProducts, List<int> productQuantity);
 
          List<int> SubtractInventory(string nameOfStore, List<int> quantity);
-         Inventory GetStoreInventory(string nameOfStore);
+         Inventory GetStoreInventory(int locationId);
     }
 }

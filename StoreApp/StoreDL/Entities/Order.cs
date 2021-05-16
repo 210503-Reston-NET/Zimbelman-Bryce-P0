@@ -14,8 +14,8 @@ namespace StoreDL.Entities
 
         public int OrderId { get; set; }
         public double Total { get; set; }
-        public int? LocationId { get; set; }
-        public int? CustomerId { get; set; }
+        public int LocationId { get; set; }
+        public int CustomerId { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Location Location { get; set; }

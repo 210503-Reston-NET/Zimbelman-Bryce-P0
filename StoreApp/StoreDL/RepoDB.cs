@@ -85,14 +85,14 @@ namespace StoreDL
         public List<Model.Customer> GetAllCustomers()
         {
             return _context.Customers.Select(customer =>
-                new Model.Customer(customer.FirstName, customer.LastName, customer.Birthdate, customer.PhoneNumber, customer.Email, customer.MailAddress)
+                new Model.Customer(customer.CustomerId, customer.FirstName, customer.LastName, customer.Birthdate, customer.PhoneNumber, customer.Email, customer.MailAddress)
             ).ToList();
         }
 
         public List<Model.Inventory> GetAllInventories()
         {
             return _context.Inventories.Select(inventory =>
-            new Model.Inventory(new Model.Location("", "", "", ""), new Model.Product("", 1.99, ""), inventory.Quantity)
+            new Model.Inventory(inventory.InventoryId, inventory.LocationId, inventory.ProductId, inventory.Quantity)
             ).ToList();
         }
 
@@ -106,7 +106,7 @@ namespace StoreDL
         public List<Model.Location> GetAllLocations()
         {
             return _context.Locations.Select(location =>
-            new Model.Location(location.StoreName, location.Address, location.City, location.State)
+            new Model.Location(location.LocationId, location.StoreName, location.Address, location.City, location.State)
             ).ToList();
         }
 
@@ -120,7 +120,7 @@ namespace StoreDL
         public List<Model.Product> GetAllProducts()
         {
             return _context.Products.Select(product =>
-            new Model.Product(product.ItemName, product.Price, product.Description)
+            new Model.Product(product.ProductId, product.ItemName, product.Price, product.Description)
             ).ToList();
         }
 
@@ -130,7 +130,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
-            return new Model.Customer(found.FirstName, found.LastName, found.Birthdate, found.PhoneNumber, found.Email, found.MailAddress);
+            return new Model.Customer(found.CustomerId, found.FirstName, found.LastName, found.Birthdate, found.PhoneNumber, found.Email, found.MailAddress);
         }
 
         public Model.LineItem GetLineItem(Model.LineItem lineItem)
@@ -139,7 +139,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
-            return new Model.LineItem(new Model.Product("", 1.99, ""), found.Quantity, found.OrderId);
+            return new Model.LineItem(found.LineItemId, lineItem.Product, found.Quantity, found.OrderId);
         }
 
         public Model.Location GetLocation(Model.Location location)
@@ -148,7 +148,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
-            return new Model.Location(found.StoreName, found.Address, found.City, found.State);
+            return new Model.Location(found.LocationId, found.StoreName, found.Address, found.City, found.State);
         }
 
         public Order GetOrder(Order order)
@@ -157,7 +157,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
-            return new Model.Order(new Location("", "", "", ""), new Customer("", "", "", "", "", ""), found.OrderId, found.Total);
+            return new Model.Order(found.OrderId , order.Location, order.Customer, found.OrderId, found.Total);
         }
 
         public Model.Product GetProduct(Model.Product product)
@@ -166,22 +166,23 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
-            return new Model.Product(found.ItemName, found.Price, found.Description);
+            return new Model.Product(found.ProductId, found.ItemName, found.Price, found.Description);
         }
 
         public Inventory GetStoreInventory(Model.Inventory inventory)
         {
-            Entity.Inventory found = _context.Inventories.FirstOrDefault(inven => inven.LocationId == inventory.Location.Id && inven.ProductId == inventory.Product.Id && inven.Quantity == inventory.Quantity);
+            Entity.Inventory found = _context.Inventories.FirstOrDefault(inven => inven.LocationId == inventory.LocationID && inven.ProductId == inventory.ProductID && inven.Quantity == inventory.Quantity);
             if (found == null) {
                 return null;
             }
-            return new Model.Inventory(new Location("", "", "", ""), new Product("", 1.99, ""), found.Quantity);
+            return new Model.Inventory(found.InventoryId, inventory.LocationID, inventory.ProductID, found.Quantity);
         }
 
-        public Model.Inventory UpdateInventory(Model.Inventory inventory, Model.Location location, Model.Product product)
+        public Model.Inventory AddInventory(Model.Inventory inventory, Model.Location location, Model.Product product)
         {
             _context.Inventories.Add(
                 new Entity.Inventory {
+                    InventoryId = inventory.Id,
                     LocationId = GetLocation(location).Id,
                     ProductId = GetProduct(product).Id,
                     Quantity = inventory.Quantity
@@ -189,6 +190,14 @@ namespace StoreDL
                 );
                 _context.SaveChanges();
                 return inventory;
+        }
+
+        public Inventory UpdateInventory(Model.Inventory inventory, Model.Location location, Model.Product product)
+        {
+            Entity.Inventory updateInventory = _context.Inventories.Single(inven => inven.InventoryId == inventory.Id);
+            updateInventory.Quantity = inventory.Quantity;
+            _context.SaveChanges();
+            return inventory;
         }
     }
 }
