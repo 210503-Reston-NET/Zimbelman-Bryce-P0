@@ -12,14 +12,18 @@ namespace StoreUI
         private ILocationBL _locationBL;
         private IProductBL _productBL;
         private IInventoryBL _inventoryBL;
+        private IOrderBL _orderBL;
+        private ILineItemBL _lineItemBL;
 
         private IValidationService _validate;
 
-        public ManagerMenu(ICustomerBL customerBL, ILocationBL locationBL, IProductBL productBL, IInventoryBL inventoryBL,IValidationService validate) {
+        public ManagerMenu(ICustomerBL customerBL, ILocationBL locationBL, IProductBL productBL, IInventoryBL inventoryBL, IOrderBL orderBL, ILineItemBL lineItemBL, IValidationService validate) {
             _customerBL = customerBL;
             _locationBL = locationBL;
             _productBL = productBL;
             _inventoryBL = inventoryBL;
+            _orderBL = orderBL;
+            _lineItemBL = lineItemBL;
             _validate = validate;
         }
 
@@ -33,8 +37,9 @@ namespace StoreUI
                 Console.WriteLine("[2] Search for a customer");
                 Console.WriteLine("[3] Add a Location");
                 Console.WriteLine("[4] View location inventory");
-                Console.WriteLine("[5] Replenish Inventory");
-                Console.WriteLine("[6] View all products");
+                Console.WriteLine("[5] View location order history");
+                Console.WriteLine("[6] Replenish Inventory");
+                Console.WriteLine("[7] View all products");
                 Console.WriteLine("[0] Go Back");
 
                 // Receives input from user
@@ -62,12 +67,16 @@ namespace StoreUI
                     case "4":
                         ViewInventory();
                         break;
-                    
+
                     case "5":
-                        ReplenishInventory();
+                        ViewLocationOrderHistory();
                         break;
                     
                     case "6":
+                        ReplenishInventory();
+                        break;
+                    
+                    case "7":
                         ViewAllProducts();
                         break;
                     
@@ -78,7 +87,39 @@ namespace StoreUI
                 }
             } while (repeat);
         }
-            private void ViewCustomers() {
+
+        private void ViewLocationOrderHistory()
+        {
+            string locationName = _validate.ValidateString("\nEnter the location you want to view");
+            try
+            {
+                Location location = _locationBL.GetLocation(locationName);
+                List<Order> locationOrders = _orderBL.GetLocationOrders(location.Id);
+                foreach (Order order in locationOrders)
+                {
+                    Customer customer = _customerBL.SearchCustomer(order.CustomerID);
+                    List<LineItem> lineItems = _lineItemBL.GetLineItems(order.OrderID);
+                    Console.WriteLine($"\nCustomer Name: {customer.FirstName} {customer.LastName} \nLocation Name: {location.StoreName}");
+                    foreach (LineItem lineItem in lineItems)
+                    {
+                        List<Product> products = _productBL.GetAllProducts();
+                        foreach (Product product in products)
+                        {
+                            if (product.Id.Equals(lineItem.ProductID)) {
+                                Console.WriteLine($"{lineItem.Quantity} {product.ItemName}");
+                            }
+                        }
+                    }
+                    Console.WriteLine($"Order Total ${order.Total}\n");
+                    }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void ViewCustomers() {
                 List<Customer> customers = _customerBL.GetAllCustomers();
                 if (customers.Count == 0) {
                     Console.WriteLine("No customers found");

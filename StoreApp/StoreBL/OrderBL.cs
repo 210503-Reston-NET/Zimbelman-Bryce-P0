@@ -46,6 +46,22 @@ namespace StoreBL
             }
         }
 
+        public List<Order> GetLocationOrders(int locationId) {
+            List<Order> orders = _repo.GetAllOrders();
+            List<Order> locationOrders = new List<Order>();
+            foreach (Order order in orders)
+            {
+                if (locationId.Equals(order.LocationID)) {
+                    locationOrders.Add(order);
+                }
+            }
+            if (locationOrders.Any()) {
+                return locationOrders;
+            } else {
+                throw new Exception("No matching orders found");
+            }
+        }
+
         public Order ViewOrder(int orderId)
         {
             List<Order> orders = _repo.GetAllOrders();

@@ -94,15 +94,14 @@ namespace StoreUI
         private void DisplayOrderHistory() {
             string firstName = _validate.ValidateString("\nEnter your first name: ");
             string lastName = _validate.ValidateString("Enter your last name: ");
-            Customer customer = _customerBL.SearchCustomer(firstName, lastName);
             try {
+                Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 List<Order> orders = _orderBL.GetCustomerOrders(customer.Id);
                 foreach (Order order in orders)
                 {
-                    int orderId = order.OrderID;
-                    List<LineItem> lineItems = _lineItemBL.GetLineItems(orderId);
+                    List<LineItem> lineItems = _lineItemBL.GetLineItems(order.OrderID);
                     Location location = _locationBL.GetLocation(order.LocationID);
-                    Console.WriteLine($"\nCustomer Name: {firstName} {lastName} \nLocation Name{location.StoreName}");
+                    Console.WriteLine($"\nCustomer Name: {firstName} {lastName} \nLocation Name: {location.StoreName}");
                     foreach (LineItem lineItem in lineItems)
                     {
                         List<Product> products = _productBL.GetAllProducts();
