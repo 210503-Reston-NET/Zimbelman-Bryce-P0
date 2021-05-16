@@ -95,18 +95,26 @@ namespace StoreUI
         private void DisplayOrderHistory() {
             string firstName = _validate.ValidateString("Enter your first name: ");
             string lastName = _validate.ValidateString("Enter your last name: ");
+            Customer customer = _customerBL.SearchCustomer(firstName, lastName);
             try {
-                List<Order> orders = _orderBL.GetCustomerOrders(firstName, lastName);
+                List<Order> orders = _orderBL.GetCustomerOrders(customer.Id);
                 foreach (Order order in orders)
                 {
                     List<int> quantity = new List<int>();
                     List<LineItem> lineItems = new List<LineItem>();
                     int orderID = order.OrderID;
                     lineItems = _lineItemBL.GetLineItems(orderID);
-                    Console.WriteLine(order.ToString());
+                    Location location = _locationBL.GetLocation(order.LocationID);
+                    Console.WriteLine($"Customer Name: {firstName} {lastName} \nLocation Name{location.StoreName}");
                     foreach (LineItem lineItem in lineItems)
                     {
-                        Console.WriteLine(lineItem.ToString());
+                        List<Product> products = _productBL.GetAllProducts();
+                        foreach (Product product in products)
+                        {
+                            if (product.Id.Equals(lineItem.ProductID)) {
+                                Console.WriteLine($"{lineItem.Quantity} {product.ItemName}");
+                            }
+                        }
                         quantity.Add(lineItem.Quantity);
                     }
                     double total = _productBL.GetTotal(quantity);
@@ -134,7 +142,7 @@ namespace StoreUI
                     foreach (Product item in products)
                     {
                         quantity.Add(_validate.ValidateInt($"{item.ItemName}: "));
-                        LineItem lineItem = new LineItem(item, quantity[i], orderID);
+                        LineItem lineItem = new LineItem(item.Id, quantity[i], orderID);
                         _lineItemBL.AddLineItem(lineItem, item);
                         i++;
                     }
@@ -148,7 +156,7 @@ namespace StoreUI
                             case "Y":
                                 orderRepeat = false;
                                 try {
-                                    Order newOrder = new Order(location, customer, orderID, total);
+                                    Order newOrder = new Order(location.Id, customer.Id, orderID, total);
                                     _inventoryBL.SubtractInventory(locationName, quantity);
                                     _orderBL.AddOrder(newOrder, location, customer);
                                     Console.WriteLine("Order Sucessfully placed");

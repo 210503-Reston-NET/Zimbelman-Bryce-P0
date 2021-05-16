@@ -7,6 +7,7 @@ namespace StoreBL
     {
          Location AddLocation(Location location);
          List<Location> GetAllLocations();
-         Location GetLocation(string name);    
+         Location GetLocation(int locationId);
+         Location GetLocation(string locationName);
     }
 }

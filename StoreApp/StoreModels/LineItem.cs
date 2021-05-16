@@ -6,24 +6,24 @@ namespace StoreModels
     /// </summary>
     public class LineItem
     {
-        public LineItem(Product product, int quantity, int orderID) {
-            this.Product = product;
+        public LineItem(int productId, int quantity, int orderID) {
+            this.ProductID = productId;
             this.Quantity = quantity;
             this.OrderID = orderID;
         }
 
-        public LineItem(int id, Product product, int quantity, int orderID) : this(product, quantity, orderID) {
+        public LineItem(int id, int productId, int quantity, int orderID) : this(productId, quantity, orderID) {
             this.Id = id;
         }
 
         public int Id { get; set; }
-        public Product Product { get; set; }
+        public int ProductID { get; set; }
         public int Quantity { get; set; }
         public int OrderID { get; set; }
 
         public override string ToString()
         {
-            return $"{Quantity} {Product.ItemName}";
+            return $"{Quantity}";
         }
     }
 }

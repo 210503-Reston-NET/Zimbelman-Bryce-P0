@@ -31,6 +31,20 @@ namespace StoreBL
             return _repo.GetAllLocations();
         }
 
+        public Location GetLocation(int locationId)
+        {
+            List<Location> locations = GetAllLocations();
+            if (locations.Count == 0) {
+                throw new Exception ("No Locations Found");
+            } else {
+                foreach (Location location in locations) {
+                    if (locationId.Equals(location.Id)) {
+                        return location;
+                    }
+                }
+                throw new Exception ("No matching locations found"); 
+            }
+        }
         public Location GetLocation(string name)
         {
             List<Location> locations = GetAllLocations();
@@ -43,9 +57,6 @@ namespace StoreBL
                     }
                 }
                 throw new Exception ("No matching locations found"); 
-                {
-                    
-                }
             }
         }
     }

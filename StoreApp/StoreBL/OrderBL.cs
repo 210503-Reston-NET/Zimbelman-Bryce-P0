@@ -25,13 +25,13 @@ namespace StoreBL
             return _repo.GetAllOrders();
         }
 
-        public List<Order> GetCustomerOrders(string firstName, string lastName)
+        public List<Order> GetCustomerOrders(int customerId)
         {
             List<Order> orders = _repo.GetAllOrders();
             List<Order> customerOrders = new List<Order>();
             foreach (Order order in orders)
             {
-                if (firstName.Equals(order.Customer.FirstName) && lastName.Equals(order.Customer.LastName)) {
+                if (customerId.Equals(order.CustomerID)) {
                     customerOrders.Add(order);
                 }
             }

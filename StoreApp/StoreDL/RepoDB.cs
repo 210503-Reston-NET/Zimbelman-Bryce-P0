@@ -99,7 +99,7 @@ namespace StoreDL
         public List<Model.LineItem> GetAllLineItems()
         {
             return _context.LineItems.Select(lineItem => 
-            new Model.LineItem(new Model.Product("", 1.99, ""), lineItem.Quantity, lineItem.OrderId)
+            new Model.LineItem(lineItem.ProductId, lineItem.Quantity, lineItem.OrderId)
             ).ToList();
         }
 
@@ -113,7 +113,7 @@ namespace StoreDL
         public List<Model.Order> GetAllOrders()
         {
             return _context.Orders.Select(order =>
-            new Model.Order(new Model.Location("", "", "", ""), new Model.Customer("", "", "", "", "", ""), order.OrderId, order.Total)
+            new Model.Order(order.LocationId, order.CustomerId, order.OrderId, order.Total)
             ).ToList();
         }
 
@@ -135,11 +135,11 @@ namespace StoreDL
 
         public Model.LineItem GetLineItem(Model.LineItem lineItem)
         {
-            Entity.LineItem found = _context.LineItems.FirstOrDefault( li => li.ProductId == lineItem.Product.Id && li.Quantity == lineItem.Quantity && li.OrderId == lineItem.OrderID);
+            Entity.LineItem found = _context.LineItems.FirstOrDefault( li => li.ProductId == lineItem.ProductID && li.Quantity == lineItem.Quantity && li.OrderId == lineItem.OrderID);
             if (found == null) {
                 return null;
             }
-            return new Model.LineItem(found.LineItemId, lineItem.Product, found.Quantity, found.OrderId);
+            return new Model.LineItem(found.LineItemId, lineItem.ProductID, found.Quantity, found.OrderId);
         }
 
         public Model.Location GetLocation(Model.Location location)
@@ -153,11 +153,11 @@ namespace StoreDL
 
         public Order GetOrder(Order order)
         {
-            Entity.Order found = _context.Orders.FirstOrDefault(ord => ord.LocationId == order.Location.Id && ord.CustomerId == order.Customer.Id && ord.OrderId == order.OrderID && ord.Total == order.Total);
+            Entity.Order found = _context.Orders.FirstOrDefault(ord => ord.LocationId == order.LocationID && ord.CustomerId == order.CustomerID && ord.OrderId == order.OrderID && ord.Total == order.Total);
             if (found == null) {
                 return null;
             }
-            return new Model.Order(found.OrderId , order.Location, order.Customer, found.OrderId, found.Total);
+            return new Model.Order(found.OrderId , order.LocationID, order.CustomerID, found.OrderId, found.Total);
         }
 
         public Model.Product GetProduct(Model.Product product)
