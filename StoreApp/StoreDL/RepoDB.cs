@@ -33,7 +33,7 @@ namespace StoreDL
         {
             _context.LineItems.Add(
                 new Entity.LineItem {
-                    ProductId = GetProduct(product).Id,
+                    ProductId = lineItem.ProductID,
                     Quantity = lineItem.Quantity,
                     OrderId =lineItem.OrderID
                 }
@@ -198,6 +198,13 @@ namespace StoreDL
             updateInventory.Quantity = inventory.Quantity;
             _context.SaveChanges();
             return inventory;
+        }
+
+                public Model.Order UpdateOrder(Model.Order order, Model.Location location, Model.Customer customer) {
+                    Entity.Order updateOrder = _context.Orders.Single(ord => ord.OrderId == order.OrderID);
+                    updateOrder.Total = order.Total;
+                    _context.SaveChanges();
+                    return order;
         }
     }
 }

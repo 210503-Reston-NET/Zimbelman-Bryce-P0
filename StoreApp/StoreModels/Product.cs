@@ -37,7 +37,7 @@ namespace StoreModels
 
         public override string ToString()
         {
-            return $"Item: {ItemName} \nPrice: ${Price} \nDescription: {Description}";
+            return $"Item: {ItemName} \nPrice: ${Price} \nDescription: {Description}\n";
         }
 
         public bool Equals(Product product) {

@@ -7,5 +7,6 @@ namespace StoreBL
          List<Customer> GetAllCustomers();
          Customer AddCustomer(Customer customer);
          Customer SearchCustomer(string firstName, string lastName);
+         Customer SearchCustomer(int customerId);
     }
 }

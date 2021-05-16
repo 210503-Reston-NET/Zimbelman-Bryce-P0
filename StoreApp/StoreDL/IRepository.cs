@@ -23,6 +23,7 @@ namespace StoreDL
         Inventory GetStoreInventory(Inventory inventory);
 
         Order AddOrder(Order order, Location location, Customer customer);
+        Order UpdateOrder(Order order, Location location, Customer customer);
         Order GetOrder(Order order);
         List<Order> GetAllOrders();
         List<LineItem> GetAllLineItems();

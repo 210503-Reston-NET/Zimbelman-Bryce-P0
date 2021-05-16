@@ -20,6 +20,10 @@ namespace StoreBL
             return _repo.AddOrder(order, location, customer);
         }
 
+        public Order UpdateOrder(Order order, Location location, Customer customer) {
+            return _repo.UpdateOrder(order, location, customer);
+        }
+
         public List<Order> GetAllOrders()
         {
             return _repo.GetAllOrders();
@@ -42,9 +46,15 @@ namespace StoreBL
             }
         }
 
-        public Order ViewOrder(Order order)
+        public Order ViewOrder(int orderId)
         {
-            return _repo.GetOrder(order);
+            List<Order> orders = _repo.GetAllOrders();
+            foreach (Order order in orders) {
+                if (orderId.Equals(order.OrderID)) {
+                    return order;
+                }
+            }
+            throw new Exception("No matching orders found");
         }
     }
 }

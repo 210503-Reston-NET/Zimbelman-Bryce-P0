@@ -83,7 +83,7 @@ namespace StoreBL
                         inventory.Quantity -= productQuantity[i];
                         updatedInventory.Add(inventory.Quantity);
                         i++;
-                        _repo.AddInventory(inventory, location, item);
+                        _repo.UpdateInventory(inventory, location, item);
                         }
                     }
                 }

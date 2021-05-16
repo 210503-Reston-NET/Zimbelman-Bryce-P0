@@ -39,5 +39,20 @@ namespace StoreBL
                 throw new Exception ("No matching customer found");
             }
         }
+
+        public Customer SearchCustomer(int customerId) {
+            List<Customer> customers = GetAllCustomers();
+            if (customers.Count == 0) {
+                throw new Exception ("No customers found");
+            } else {
+                foreach (Customer customer in customers)
+                {
+                    if (customerId.Equals(customer.Id)) {
+                        return customer;
+                    }
+                }
+                throw new Exception ("No matching customer found");
+            }
+        }
     }
 }

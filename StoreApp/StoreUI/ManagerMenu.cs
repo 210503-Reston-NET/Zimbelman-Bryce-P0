@@ -30,13 +30,11 @@ namespace StoreUI
             {
                 Console.WriteLine("What would you like to do?\n");
                 Console.WriteLine("[1] Add a new customer");
-                Console.WriteLine("[2] View all customers");
-                Console.WriteLine("[3] Search for a customer");
-                Console.WriteLine("[4] Add a Location");
-                Console.WriteLine("[5] View location inventory");
-                Console.WriteLine("[6] Replenish Inventory");
-                Console.WriteLine("[7] Add a new product");
-                Console.WriteLine("[8] View all products");
+                Console.WriteLine("[2] Search for a customer");
+                Console.WriteLine("[3] Add a Location");
+                Console.WriteLine("[4] View location inventory");
+                Console.WriteLine("[5] Replenish Inventory");
+                Console.WriteLine("[6] View all products");
                 Console.WriteLine("[0] Go Back");
 
                 // Receives input from user
@@ -54,30 +52,22 @@ namespace StoreUI
                         break;
 
                     case "2":
-                        ViewCustomers();
-                        break;
-
-                    case "3":
                         SearchCustomer();
                         break;
 
-                    case "4":
+                    case "3":
                         AddALocation();
                         break;
                     
-                    case "5":
+                    case "4":
                         ViewInventory();
                         break;
                     
-                    case "6":
+                    case "5":
                         ReplenishInventory();
                         break;
-
-                    case "7":
-                        AddAProduct();
-                        break;
                     
-                    case "8":
+                    case "6":
                         ViewAllProducts();
                         break;
                     
@@ -100,7 +90,7 @@ namespace StoreUI
         }
 
             private void AddACustomer() {
-                Console.WriteLine("Enter the details of the customer you want to add");
+                Console.WriteLine("\nEnter the details of the customer you want to add");
                 string firstName = _validate.ValidateString("Enter the customer first name: ");
                 string lastName = _validate.ValidateString("Enter the customer last name");
                 string birthdate = _validate.ValidateString("Enter the customer birthdate (MM/DD/YYYY): ");
@@ -111,7 +101,7 @@ namespace StoreUI
                 {
                     Customer newCustomer = new Customer(firstName, lastName, birthdate, phoneNumber, email, mailAddress);
                     Customer createdCustomer = _customerBL.AddCustomer(newCustomer);
-                    Console.WriteLine("New Customer Created!");
+                    Console.WriteLine("New Customer Created!\n");
                     Console.WriteLine(createdCustomer.ToString());
                 }
                 catch (Exception ex)
@@ -121,7 +111,7 @@ namespace StoreUI
         }
 
         private void AddALocation() {
-            Console.WriteLine("Enter the details of the location you want to add");
+            Console.WriteLine("\nEnter the details of the location you want to add");
             string name = _validate.ValidateString("Enter the location name: ");
             string address = _validate.ValidateString("Enter the location street address: ");
             string city = _validate.ValidateString("Enter the location city: ");
@@ -131,7 +121,7 @@ namespace StoreUI
             {
                 Location newLocation = new Location(name, address, city, state);
                 Location createdLocation = _locationBL.AddLocation(newLocation);
-                Console.WriteLine("New Location Created");
+                Console.WriteLine("New Location Created\n");
                 Console.WriteLine(createdLocation.ToString());
             }
             catch (Exception ex) 
@@ -141,14 +131,14 @@ namespace StoreUI
         }
 
         private void AddAProduct() {
-            Console.WriteLine("Enter the details of the product you want to add");
+            Console.WriteLine("\nEnter the details of the product you want to add");
             string itemName = _validate.ValidateString("Enter the product name: ");
             double price = _validate.ValidateDouble("Enter the price of the product: ");
             string description = _validate.ValidateString("Enter a description for the product: ");
             try {
                 Product newProduct = new Product(itemName, price, description);
                 Product createdProduct = _productBL.AddProduct(newProduct);
-                Console.WriteLine("New Product Created");
+                Console.WriteLine("New Product Created\n");
                 Console.WriteLine(createdProduct.ToString());
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
@@ -156,7 +146,7 @@ namespace StoreUI
         }
 
         private void SearchCustomer() {
-            string firstName = _validate.ValidateString("Enter first name of customer you want to view");
+            string firstName = _validate.ValidateString("\nEnter first name of customer you want to view");
             string lastName = _validate.ValidateString("Enter the last name of customer you want to view");
             try
             {
@@ -170,7 +160,7 @@ namespace StoreUI
         }
 
         private void ViewInventory() {
-            string storeName = _validate.ValidateString("Enter name of store you want to view");
+            string storeName = _validate.ValidateString("\nEnter name of store you want to view");
             Location location = _locationBL.GetLocation(storeName);
             List<Product> products = _productBL.GetAllProducts();
             try
@@ -181,6 +171,7 @@ namespace StoreUI
                 {
                     Console.WriteLine($"{product.ItemName}: {inventory.Quantity}");
                 }
+                Console.WriteLine("");
             }
             catch (Exception ex)
             {
@@ -191,8 +182,9 @@ namespace StoreUI
         private void ViewAllProducts() {
             List<Product> products = _productBL.GetAllProducts();
                 if (products.Count == 0) {
-                    Console.WriteLine("No products found");
+                    Console.WriteLine("\nNo products found");
                 } else {
+                    Console.WriteLine("");
                     foreach (Product product in products) {
                     Console.WriteLine(product.ToString());
                 }   
@@ -200,7 +192,7 @@ namespace StoreUI
         }
         
         private void ReplenishInventory() {
-            string name = _validate.ValidateString("Enter name of store you want to replenish");
+            string name = _validate.ValidateString("\nEnter name of store you want to replenish");
             List<Product> products = _productBL.GetAllProducts();
             List<int> quantity = new List<int>();
             int numOfProducts = products.Count;
@@ -217,6 +209,7 @@ namespace StoreUI
                     Console.WriteLine($"{product.ItemName}: {inventory[i]}");
                     i++;
                 }
+                Console.WriteLine("");
             }
             catch (Exception ex)
             {

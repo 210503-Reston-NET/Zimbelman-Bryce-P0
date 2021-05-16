@@ -6,8 +6,9 @@ namespace StoreBL
     {
          List<Order> GetCustomerOrders(int customerId);
          Order AddOrder(Order order, Location location, Customer customer);
+         Order UpdateOrder(Order order, Location location, Customer customer);
 
-         Order ViewOrder(Order order);
+         Order ViewOrder(int orderId);
          List<Order> GetAllOrders();
     }
 }
