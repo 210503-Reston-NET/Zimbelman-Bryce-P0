@@ -126,19 +126,19 @@ namespace StoreUI
                         case "1":
                             repeat = false;
                             Log.Information("Sort by Date Ascending Selected");
-                            orders.OrderBy(ord => ord.OrderDate).ToList();
+                            orders = orders.OrderBy(ord => ord.OrderDate).ToList();
                             break;
 
                         case "2":
                             repeat = false;
                             Log.Information("Sort by Date Descending Selected");
-                            orders.OrderByDescending(ord => ord.OrderDate).ToList();
+                            orders = orders.OrderByDescending(ord => ord.OrderDate).ToList();
                             break;
 
                         case "3":
                             repeat = false;
                             Log.Information("Sort by Cost Ascending Seleceted");
-                            orders.OrderBy(ord => ord.Total).ToList();
+                            orders = orders.OrderBy(ord => ord.Total).ToList();
                             break;
                         
                         default:
@@ -163,7 +163,7 @@ namespace StoreUI
                         }
                     }
                     Console.WriteLine($"Order Total ${order.Total}\n");
-                    }
+                }
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
             } 
@@ -243,6 +243,7 @@ namespace StoreUI
                     switch (orderInput)
                     {
                         case "Y":
+                            orderRepeat = false;
                             Log.Information("Customer to proceed with purchase");
                             newOrder.Total = total;
                             newOrder.OrderID = orderID;
@@ -254,8 +255,6 @@ namespace StoreUI
 
                         case "N":
                             Log.Information("Customer canceled purchase");
-                            orderRepeat = false;
-                            PlaceOrder();
                             break;
                     
                         default:
