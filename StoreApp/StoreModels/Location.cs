@@ -2,7 +2,7 @@ using System.Collections.Generic;
 namespace StoreModels
 {
     /// <summary>
-    /// This class should contain all the fields and properties that define a store location.
+    /// Location Model
     /// </summary>
     public class Location
     {
@@ -17,27 +17,31 @@ namespace StoreModels
             this.Id = id;
         }
 
+        /// <summary>
+        /// This represents a unique value for every location
+        /// </summary>
+        /// <value></value>
         public int Id { get; set; }
         /// <summary>
-        /// This contains the street address of a store location
+        /// This represents the street address of a store location
         /// </summary>
         /// <value></value>
         public string Address { get; set; }
 
         /// <summary>
-        /// This contains the city of a store location
+        /// This represents the city of a store location
         /// </summary>
         /// <value></value>
         public string City { get; set; }
 
         /// <summary>
-        /// This contains the state of a store location
+        /// This represents the state of a store location
         /// </summary>
         /// <value></value>
         public string State { get; set; }
 
         /// <summary>
-        /// This contains the name of a store location
+        /// This represents the name of a store location
         /// </summary>
         /// <value></value>
         public string StoreName { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace StoreUI
+﻿using System;
+using Serilog;
+namespace StoreUI
 {
     class Program
     {
@@ -8,6 +10,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration().MinimumLevel.Information().WriteTo.File("../logs/mochamomentlog.txt", rollingInterval: RollingInterval.Day).CreateLogger();
             //call method that starts main user interface
             MenuFactory.GetMenu("main").Start();
         }

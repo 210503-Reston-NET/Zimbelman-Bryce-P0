@@ -3,7 +3,7 @@ namespace StoreModels
     public class Inventory
     {
         /// <summary>
-        /// This class contains inventory information for each store mapped to a product.
+        /// Inventory Model
         /// </summary>
         /// <param name="location"></param>
         /// <param name="product"></param>
@@ -23,8 +23,20 @@ namespace StoreModels
         /// </summary>
         /// <value></value>
         public int Id { get; set; }
+        /// <summary>
+        /// This represents a unique value for every location
+        /// </summary>
+        /// <value></value>
         public int LocationID { get; set; }
+        /// <summary>
+        /// This represents a unique value for every product
+        /// </summary>
+        /// <value></value>
         public int ProductID { get; set; }
+        /// <summary>
+        /// This represents a stores quantity of a product
+        /// </summary>
+        /// <value></value>
         public int Quantity { get; set; }
 
         public override string ToString()

@@ -3,6 +3,7 @@ using StoreModels;
 using StoreBL;
 using System.Collections.Generic;
 using System.Linq;
+using Serilog;
 
 namespace StoreUI
 {
@@ -44,22 +45,27 @@ namespace StoreUI
             {
                 case "0":
                         // Exit
+                        Log.Information("Go Back to Previous Menu");
                         repeat = false;
                         break;
                     
                     case "1":
+                        Log.Information("Place Order Selected");
                         PlaceOrder();
                         break;
 
                     case "2":
+                        Log.Information("Add Customer Selected");
                         AddACustomer();
                         break;
                     
                     case "3":
+                        Log.Information("Search for specific order selected");
                         OrderSearch();
                         break;
                     
                     case "4":
+                        Log.Information("View Cusotmer Order History Selected");
                         DisplayOrderHistory();
                         break;
 
@@ -71,6 +77,9 @@ namespace StoreUI
             } while (repeat);
         }
 
+        /// <summary>
+        /// UI to add a customer
+        /// </summary>
         private void AddACustomer() {
             Console.WriteLine("\nEnter the details of the customer you want to add");
             string firstName = _validate.ValidateString("Enter the customer first name: ");
@@ -79,6 +88,7 @@ namespace StoreUI
             string phoneNumber = _validate.ValidateString("Enter the customer phone number: ");
             string email = _validate.ValidateString("Enter the customer email: ");
             string mailAddress = _validate.ValidateString("Enter the customer mailing address: ");
+            Log.Information("Customer information input");
             try
             {
                 Customer newCustomer = new Customer(firstName, lastName,  birthdate, phoneNumber, email, mailAddress);
@@ -92,10 +102,14 @@ namespace StoreUI
             }
         }
 
+        /// <summary>
+        /// UI to display customer order history
+        /// </summary>
         private void DisplayOrderHistory() {
             bool repeat = true;
             string firstName = _validate.ValidateString("\nEnter your first name: ");
             string lastName = _validate.ValidateString("Enter your last name: ");
+            Log.Information("Customer information input");
             try {
                 Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 List<Order> orders = _orderBL.GetCustomerOrders(customer.Id);
@@ -111,16 +125,19 @@ namespace StoreUI
                     {
                         case "1":
                             repeat = false;
+                            Log.Information("Sort by Date Ascending Selected");
                             orders.OrderBy(ord => ord.OrderDate).ToList();
                             break;
 
                         case "2":
                             repeat = false;
+                            Log.Information("Sort by Date Descending Selected");
                             orders.OrderByDescending(ord => ord.OrderDate).ToList();
                             break;
 
                         case "3":
                             repeat = false;
+                            Log.Information("Sort by Cost Ascending Seleceted");
                             orders.OrderBy(ord => ord.Total).ToList();
                             break;
                         
@@ -152,8 +169,12 @@ namespace StoreUI
             } 
         }
 
+        /// <summary>
+        /// UI to search for specific order by orderID
+        /// </summary>
         private void OrderSearch() {
             int orderId = _validate.ValidateInt("\nEnter Order ID: ");
+            Log.Information("Order ID Input");
             try
             {
                 Order customerOrder = _orderBL.ViewOrder(orderId);
@@ -179,6 +200,10 @@ namespace StoreUI
             }
             
         }
+
+        /// <summary>
+        /// UI to place customer order
+        /// </summary>
         private void PlaceOrder() {
             bool orderRepeat = true;
             int i = 0;
@@ -187,10 +212,12 @@ namespace StoreUI
                 List<Product> products = _productBL.GetAllProducts();
                 List<int> quantity = new List<int>();
                 string locationName = _validate.ValidateString("\nEnter name of location to shop at: ");
+                Log.Information("Location Selected");
                 int orderID = 0;
                 Location location = _locationBL.GetLocation(locationName);
                 string firstName = _validate.ValidateString("Enter your first name: ");
                 string lastName = _validate.ValidateString("Enter your last name: ");
+                Log.Information("Customer Name Entered");
                 Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 Console.WriteLine("Enter the amount desired of each item");
                 orderDate = DateTime.Now;
@@ -216,15 +243,17 @@ namespace StoreUI
                     switch (orderInput)
                     {
                         case "Y":
-                            orderRepeat = false;
+                            Log.Information("Customer to proceed with purchase");
                             newOrder.Total = total;
                             newOrder.OrderID = orderID;
                             _inventoryBL.SubtractInventory(locationName, quantity);
                             _orderBL.UpdateOrder(newOrder, location, customer);
                             Console.WriteLine($"Order Sucessfully placed \nOrder ID: {newOrder.OrderID}\n");
+                            Log.Information("Order Placed");
                             break;
 
                         case "N":
+                            Log.Information("Customer canceled purchase");
                             orderRepeat = false;
                             PlaceOrder();
                             break;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using StoreModels;
 using StoreDL;
 using System;
+using Serilog;
 
 namespace StoreBL
 {
@@ -17,13 +18,16 @@ namespace StoreBL
         public Product AddProduct(Product product)
         {
             if (_repo.GetProduct(product) != null) {
+                Log.Information("Product already exists");
                 throw new Exception ("Product already exists");
             }
+            Log.Information("BL sent product to DL");
             return _repo.AddProduct(product);
         }
 
         public List<Product> GetAllProducts()
         {
+            Log.Information("BL attempt to retrieve list of all products from DL");
             return _repo.GetAllProducts();
         }
 
@@ -38,6 +42,7 @@ namespace StoreBL
                 i++;
             }
             total = Math.Round(total, 2);
+            Log.Information("BL calcualted and sent order total to UI");
             return total;
         }
     }

@@ -24,6 +24,6 @@ namespace StoreUI
         /// </summary>
         /// <param name="prompt"></param>
         /// <returns></returns>
-         double ValidateDouble(string prompt);
+         double ValidatePrice(string prompt);
     }
 }

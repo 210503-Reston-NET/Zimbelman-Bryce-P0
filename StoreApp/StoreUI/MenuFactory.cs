@@ -8,7 +8,7 @@ using StoreDL.Entities;
 namespace StoreUI
 {
     /// <summary>
-    /// Class to manufacture menus using factory
+    /// Class to manufacture menus using factory design pattern
     /// </summary>
     public class MenuFactory
     {

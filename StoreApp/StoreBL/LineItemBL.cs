@@ -3,6 +3,7 @@ using StoreModels;
 using StoreDL;
 using System;
 using System.Linq;
+using Serilog;
 
 namespace StoreBL
 {
@@ -18,11 +19,13 @@ namespace StoreBL
         }
         public LineItem AddLineItem(LineItem lineItem, Product product)
         {
+            Log.Information("BL sent line item to DL");
             return _repo.AddLineItem(lineItem, product);
         }
 
         public List<LineItem> GetAllLineItems()
         {
+            Log.Information("BL attempt to retrieve all line items from DL");
             return _repo.GetAllLineItems();
         }
 
@@ -31,6 +34,7 @@ namespace StoreBL
             List<LineItem> lineItems = GetAllLineItems();
             List<LineItem> requestedLineItems = new List<LineItem>();
             if (lineItems.Count == 0) {
+                Log.Information("No orders placed");
                 throw new Exception("No orders placed");
             } else {
                 foreach (LineItem lineItem in lineItems)
@@ -40,8 +44,10 @@ namespace StoreBL
                     }
                 }
                 if (!requestedLineItems.Any()) {
+                    Log.Information("No matching order found");
                     throw new Exception("No matching order found");
                 } else {
+                    Log.Information("BL sent list of line items to UI");
                     return requestedLineItems;
                 }
                 

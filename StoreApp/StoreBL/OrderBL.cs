@@ -3,6 +3,8 @@ using StoreModels;
 using StoreDL;
 using System;
 using System.Linq;
+using Serilog;
+
 namespace StoreBL
 {
     public class OrderBL : IOrderBL
@@ -17,15 +19,18 @@ namespace StoreBL
         }
         public Order AddOrder(Order order, Location location, Customer customer)
         {
+            Log.Information("BL sent order to DL");
             return _repo.AddOrder(order, location, customer);
         }
 
         public Order UpdateOrder(Order order, Location location, Customer customer) {
+            Log.Information("BL sent order to DL");
             return _repo.UpdateOrder(order, location, customer);
         }
 
         public List<Order> GetAllOrders()
         {
+            Log.Information("BL attempt to retrieve list of all orders from DL");
             return _repo.GetAllOrders();
         }
 
@@ -40,8 +45,10 @@ namespace StoreBL
                 }
             }
             if (customerOrders.Any()) {
+                Log.Information("BL sent list of customer orders to UI");
                 return customerOrders;
             } else {
+                Log.Information("No matching orders found");
                 throw new Exception("No matching orders found");
             }
         }
@@ -56,8 +63,10 @@ namespace StoreBL
                 }
             }
             if (locationOrders.Any()) {
+                Log.Information("BL sent list of locations orders to UI");
                 return locationOrders;
             } else {
+                Log.Information("No matching orders found");
                 throw new Exception("No matching orders found");
             }
         }
@@ -67,9 +76,11 @@ namespace StoreBL
             List<Order> orders = _repo.GetAllOrders();
             foreach (Order order in orders) {
                 if (orderId.Equals(order.OrderID)) {
+                    Log.Information("BL sent order to UI");
                     return order;
                 }
             }
+            Log.Information("No matching orders found");
             throw new Exception("No matching orders found");
         }
     }

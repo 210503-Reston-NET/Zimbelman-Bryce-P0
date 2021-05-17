@@ -3,6 +3,7 @@ using System.Linq;
 using Model = StoreModels;
 using Entity = StoreDL.Entities;
 using StoreModels;
+using Serilog;
 
 namespace StoreDL
 {
@@ -25,6 +26,7 @@ namespace StoreDL
                 }
             );
             _context.SaveChanges();
+            Log.Information("DL persisted customer add to DB");
             return customer;
         }
 
@@ -38,6 +40,7 @@ namespace StoreDL
                     OrderId =lineItem.OrderID
                 }
             );
+            Log.Information("DL persisted line item add to DB");
             _context.SaveChanges();
             return lineItem;
         }
@@ -52,6 +55,7 @@ namespace StoreDL
                     State = location.State
                 }
             );
+            Log.Information("DL persisted location add to DB");
             _context.SaveChanges();
             return location;
         }
@@ -66,6 +70,7 @@ namespace StoreDL
                     OrderDate = order.OrderDate
                 }
             );
+            Log.Information("DL persisted order add to DB");
             _context.SaveChanges();
             return order;
         }
@@ -79,12 +84,14 @@ namespace StoreDL
                     Description = product.Description
                 }
             );
+            Log.Information("DL persisted product add to DB");
             _context.SaveChanges();
             return product;
         }
 
         public List<Model.Customer> GetAllCustomers()
         {
+            Log.Information("DL sent list of all customers to BL");
             return _context.Customers.Select(customer =>
                 new Model.Customer(customer.CustomerId, customer.FirstName, customer.LastName, customer.Birthdate, customer.PhoneNumber, customer.Email, customer.MailAddress)
             ).ToList();
@@ -92,6 +99,7 @@ namespace StoreDL
 
         public List<Model.Inventory> GetAllInventories()
         {
+            Log.Information("DL sent list of all inventories to BL");
             return _context.Inventories.Select(inventory =>
             new Model.Inventory(inventory.InventoryId, inventory.LocationId, inventory.ProductId, inventory.Quantity)
             ).ToList();
@@ -99,6 +107,7 @@ namespace StoreDL
 
         public List<Model.LineItem> GetAllLineItems()
         {
+            Log.Information("DL sent list of all line items to BL");
             return _context.LineItems.Select(lineItem => 
             new Model.LineItem(lineItem.ProductId, lineItem.Quantity, lineItem.OrderId)
             ).ToList();
@@ -106,6 +115,7 @@ namespace StoreDL
 
         public List<Model.Location> GetAllLocations()
         {
+            Log.Information("DL sent list of all locations to BL");
             return _context.Locations.Select(location =>
             new Model.Location(location.LocationId, location.StoreName, location.Address, location.City, location.State)
             ).ToList();
@@ -113,6 +123,7 @@ namespace StoreDL
 
         public List<Model.Order> GetAllOrders()
         {
+            Log.Information("DL sent list of all orders to BL");
             return _context.Orders.Select(order =>
             new Model.Order(order.LocationId, order.CustomerId, order.OrderId, order.Total, order.OrderDate)
             ).ToList();
@@ -120,6 +131,7 @@ namespace StoreDL
 
         public List<Model.Product> GetAllProducts()
         {
+            Log.Information("DL sent list of all products to BL");
             return _context.Products.Select(product =>
             new Model.Product(product.ProductId, product.ItemName, product.Price, product.Description)
             ).ToList();
@@ -131,6 +143,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
+            Log.Information("DL sent customer to BL");
             return new Model.Customer(found.CustomerId, found.FirstName, found.LastName, found.Birthdate, found.PhoneNumber, found.Email, found.MailAddress);
         }
 
@@ -140,6 +153,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
+            Log.Information("DL sent line item to BL");
             return new Model.LineItem(found.LineItemId, lineItem.ProductID, found.Quantity, found.OrderId);
         }
 
@@ -149,6 +163,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
+            Log.Information("DL sent location to BL");
             return new Model.Location(found.LocationId, found.StoreName, found.Address, found.City, found.State);
         }
 
@@ -158,6 +173,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
+            Log.Information("DL sent order to BL");
             return new Model.Order(found.OrderId , order.LocationID, order.CustomerID, found.OrderId, found.Total, found.OrderDate);
         }
 
@@ -167,6 +183,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
+            Log.Information("DL sent product to BL");
             return new Model.Product(found.ProductId, found.ItemName, found.Price, found.Description);
         }
 
@@ -176,6 +193,7 @@ namespace StoreDL
             if (found == null) {
                 return null;
             }
+            Log.Information("DL sent store inventory to BL");
             return new Model.Inventory(found.InventoryId, inventory.LocationID, inventory.ProductID, found.Quantity);
         }
 
@@ -190,6 +208,7 @@ namespace StoreDL
                     }
                 );
                 _context.SaveChanges();
+                Log.Information("DL persisted inventory add to DB");
                 return inventory;
         }
 
@@ -198,14 +217,16 @@ namespace StoreDL
             Entity.Inventory updateInventory = _context.Inventories.Single(inven => inven.InventoryId == inventory.Id);
             updateInventory.Quantity = inventory.Quantity;
             _context.SaveChanges();
+            Log.Information("DL persisted inventory update to DB");
             return inventory;
         }
 
-                public Model.Order UpdateOrder(Model.Order order, Model.Location location, Model.Customer customer) {
-                    Entity.Order updateOrder = _context.Orders.Single(ord => ord.OrderId == order.OrderID);
-                    updateOrder.Total = order.Total;
-                    _context.SaveChanges();
-                    return order;
+        public Model.Order UpdateOrder(Model.Order order, Model.Location location, Model.Customer customer) {
+            Entity.Order updateOrder = _context.Orders.Single(ord => ord.OrderId == order.OrderID);
+            updateOrder.Total = order.Total;
+            _context.SaveChanges();
+            Log.Information("DL persisted order update to DB");
+            return order;
         }
     }
 }

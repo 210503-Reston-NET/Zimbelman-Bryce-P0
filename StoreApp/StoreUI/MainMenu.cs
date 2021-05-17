@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using StoreModels;
 using StoreBL;
 using StoreDL;
+using Serilog;
 namespace StoreUI
 {
     public class MainMenu : IMenu
@@ -26,16 +27,19 @@ namespace StoreUI
                 {
                     case "0":
                         // Exit
+                        Log.Information("Exit Program");
                         Console.WriteLine("Goodbye!");
                         repeat = false;
                         break;
 
                     case "1":
+                        Log.Information("Customer Menu Selected");
                         submenu = MenuFactory.GetMenu("customer");
                         submenu.Start();
                         break;
                     
                     case "2":
+                        Log.Information("Manager Menu Selected");
                         submenu = MenuFactory.GetMenu("manager");
                         submenu.Start();
                         break;

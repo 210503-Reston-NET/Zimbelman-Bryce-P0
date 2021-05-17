@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace StoreModels
 {
     /// <summary>
-    /// This class should contain necessary properties and fields for customer info.
+    /// Customer Model
     /// </summary>
     public class Customer
     {
@@ -21,43 +21,43 @@ namespace StoreModels
             this.Id = id;
         }
 
-            /// <summary>
-            /// This represents a unique value for every customer
-            /// </summary>
-            /// <value></value>
+        /// <summary>
+        /// This represents a unique value for every customer
+        /// </summary>
+        /// <value></value>
         public int Id { get; set; }
         /// <summary>
-        /// This describes the first name of the customer
+        /// This represents the first name of the customer
         /// </summary>
         /// <value></value>
         public string FirstName { get; set; }
 
         /// <summary>
-        /// This describes the last name of the customer
+        /// This represents the last name of the customer
         /// </summary>
         /// <value></value>
         public string LastName { get; set; }
 
         /// <summary>
-        /// This stores the customers birthdate
+        /// This represents the customers birthdate
         /// </summary>
         /// <value></value>
         public string Birthdate { get; set; }
 
         /// <summary>
-        /// This stores the customer's phone number
+        /// This represents the customer's phone number
         /// </summary>
         /// <value></value>
         public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// This stores the customer's email
+        /// This represents the customer's email
         /// </summary>
         /// <value></value>
         public string Email { get; set; }
 
         /// <summary>
-        /// This stores the customer's mailing adress
+        /// This represents the customer's mailing adress
         /// </summary>
         /// <value></value>
         public string MailAddress { get; set; }

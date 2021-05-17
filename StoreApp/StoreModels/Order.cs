@@ -4,15 +4,10 @@ using System.Collections.Generic;
 namespace StoreModels
 {
     /// <summary>
-    /// This class should contain all the fields and properties that define a customer order. 
+    /// Order Model
     /// </summary>
     public class Order
     {
-        /// <summary>
-        /// This stores the location and total for a store order
-        /// </summary>
-        /// <param name="location"></param>
-        /// <param name="total"></param>
         public Order(int locationId, int customerId, int orderID, double total, string orderDate) {
             this.LocationID = locationId;
             this.CustomerID = customerId;
@@ -25,27 +20,31 @@ namespace StoreModels
             this.Id = id;
         }
 
+        /// <summary>
+        /// This represents a unqie value for every order
+        /// </summary>
+        /// <value></value>
         public int Id { get; set; }
         /// <summary>
-        /// This stores the customer information for an order
+        /// This represents the customer information of an order
         /// </summary>
         /// <value></value>
         public int CustomerID { get; set; }
 
         /// <summary>
-        /// This stores the location information for an order
+        /// This represents the location information of an order
         /// </summary>
         /// <value></value>
         public int LocationID { get; set; }
         
         /// <summary>
-        /// This stores a unique value for each order
+        /// This represents a unique value for every order
         /// </summary>
         /// <value></value>
         public int OrderID { get; set; }
 
         /// <summary>
-        /// This stores the total dollar amount of each order
+        /// This represents the total dollar amount of an order
         /// </summary>
         /// <value></value>
         public double Total { get; set; }

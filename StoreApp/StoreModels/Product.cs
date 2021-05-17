@@ -2,7 +2,7 @@ namespace StoreModels
 {
 
     /// <summary>
-    /// This data structure models a product. The quantity was separated from the product as it could vary from orders and locations.  
+    /// Product Model
     /// </summary>
     public class Product
     {
@@ -16,21 +16,25 @@ namespace StoreModels
             this.Id = id;
         }
 
+        /// <summary>
+        /// This represents a unique value for every product
+        /// </summary>
+        /// <value></value>
         public int Id { get; set; }
         /// <summary>
-        /// This stores the name of the item
+        /// This represents the name of an item
         /// </summary>
         /// <value></value>
         public string ItemName { get; set; }
 
         /// <summary>
-        /// This stores the price of the item
+        /// This represents the price of an item
         /// </summary>
         /// <value></value>
         public double Price { get; set; }
 
         /// <summary>
-        /// This stores a description of the item
+        /// This represents a description of an item
         /// </summary>
         /// <value></value>
         public string Description { get; set; }
