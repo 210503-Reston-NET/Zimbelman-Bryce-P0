@@ -60,9 +60,10 @@ namespace StoreDL
         {
             _context.Orders.Add(
                 new Entity.Order {
-                    LocationId = GetLocation(location).Id,
-                    CustomerId = GetCustomer(customer).Id,
-                    Total = order.Total
+                    LocationId = order.LocationID,
+                    CustomerId = order.CustomerID,
+                    Total = order.Total,
+                    OrderDate = order.OrderDate
                 }
             );
             _context.SaveChanges();
@@ -113,7 +114,7 @@ namespace StoreDL
         public List<Model.Order> GetAllOrders()
         {
             return _context.Orders.Select(order =>
-            new Model.Order(order.LocationId, order.CustomerId, order.OrderId, order.Total)
+            new Model.Order(order.LocationId, order.CustomerId, order.OrderId, order.Total, order.OrderDate)
             ).ToList();
         }
 
@@ -153,11 +154,11 @@ namespace StoreDL
 
         public Order GetOrder(Order order)
         {
-            Entity.Order found = _context.Orders.FirstOrDefault(ord => ord.LocationId == order.LocationID && ord.CustomerId == order.CustomerID && ord.OrderId == order.OrderID && ord.Total == order.Total);
+            Entity.Order found = _context.Orders.FirstOrDefault(ord => ord.LocationId == order.LocationID && ord.CustomerId == order.CustomerID && ord.OrderId == order.OrderID && ord.Total == order.Total && ord.OrderDate == order.OrderDate);
             if (found == null) {
                 return null;
             }
-            return new Model.Order(found.OrderId , order.LocationID, order.CustomerID, found.OrderId, found.Total);
+            return new Model.Order(found.OrderId , order.LocationID, order.CustomerID, found.OrderId, found.Total, found.OrderDate);
         }
 
         public Model.Product GetProduct(Model.Product product)

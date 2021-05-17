@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using StoreModels;
+using System;
 namespace StoreDL
 {
     /// <summary>
@@ -20,7 +21,7 @@ namespace StoreDL
         };
 
         public static List<Order> Orders = new List<Order>() {
-            new Order(1, 1, 1, 1.99)
+            new Order(1, 1, 1, 1.99, "")
         };
 
         public static List<LineItem> LineItems = new List<LineItem>() {

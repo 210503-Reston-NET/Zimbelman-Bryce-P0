@@ -16,7 +16,7 @@ namespace StoreUI
                 Console.WriteLine("Welcome to Mocha Moment!");
                 Console.WriteLine("Are you a customer or employee?");
                 Console.WriteLine("[1] Customer");
-                Console.WriteLine("[2] Employee");
+                Console.WriteLine("[2] Manager");
                 Console.WriteLine("[0] Exit");
 
                 // Receives input from user

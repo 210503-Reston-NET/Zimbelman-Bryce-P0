@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace StoreModels
@@ -12,14 +13,15 @@ namespace StoreModels
         /// </summary>
         /// <param name="location"></param>
         /// <param name="total"></param>
-        public Order(int locationId, int customerId, int orderID, double total) {
+        public Order(int locationId, int customerId, int orderID, double total, string orderDate) {
             this.LocationID = locationId;
             this.CustomerID = customerId;
             this.OrderID = orderID;
             this.Total = total;
+            this.OrderDate = orderDate;
         }
 
-        public Order(int id, int locationId, int customerId, int orderID, double total) : this(locationId, customerId, orderID, total) {
+        public Order(int id, int locationId, int customerId, int orderID, double total, string orderDate) : this(locationId, customerId, orderID, total, orderDate) {
             this.Id = id;
         }
 
@@ -47,5 +49,6 @@ namespace StoreModels
         /// </summary>
         /// <value></value>
         public double Total { get; set; }
+        public string OrderDate { get; set; }
     }
 }

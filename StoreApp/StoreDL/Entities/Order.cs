@@ -14,6 +14,7 @@ namespace StoreDL.Entities
 
         public int OrderId { get; set; }
         public double Total { get; set; }
+        public string OrderDate { get; set; }
         public int LocationId { get; set; }
         public int CustomerId { get; set; }
 

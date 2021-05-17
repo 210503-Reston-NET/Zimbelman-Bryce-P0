@@ -2,6 +2,7 @@ using System;
 using StoreModels;
 using StoreBL;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StoreUI
 {
@@ -92,16 +93,48 @@ namespace StoreUI
         }
 
         private void DisplayOrderHistory() {
+            bool repeat = true;
             string firstName = _validate.ValidateString("\nEnter your first name: ");
             string lastName = _validate.ValidateString("Enter your last name: ");
             try {
                 Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 List<Order> orders = _orderBL.GetCustomerOrders(customer.Id);
+                do
+                {
+                    Console.WriteLine("How should the orders be sorted?");
+                    Console.WriteLine("[1] Sort by Date (Newest to Oldest)");
+                    Console.WriteLine("[2] Sort by Date (Oldest to Newest)");
+                    Console.WriteLine("[3] Sort by Cost (Lowest to Highest)");
+                    string input = Console.ReadLine();
+
+                    switch (input)
+                    {
+                        case "1":
+                            repeat = false;
+                            orders.OrderBy(ord => ord.OrderDate).ToList();
+                            break;
+
+                        case "2":
+                            repeat = false;
+                            orders.OrderByDescending(ord => ord.OrderDate).ToList();
+                            break;
+
+                        case "3":
+                            repeat = false;
+                            orders.OrderBy(ord => ord.Total).ToList();
+                            break;
+                        
+                        default:
+                            // Invalid Input
+                            Console.WriteLine("Please input a valid option");
+                            break;
+                    }
+                } while (repeat);
                 foreach (Order order in orders)
                 {
                     List<LineItem> lineItems = _lineItemBL.GetLineItems(order.OrderID);
                     Location location = _locationBL.GetLocation(order.LocationID);
-                    Console.WriteLine($"\nCustomer Name: {firstName} {lastName} \nLocation Name: {location.StoreName}");
+                    Console.WriteLine($"\nCustomer Name: {customer.FirstName} {customer.LastName} \nLocation Name: {location.StoreName} \nOrder Date: {order.OrderDate}");
                     foreach (LineItem lineItem in lineItems)
                     {
                         List<Product> products = _productBL.GetAllProducts();
@@ -127,7 +160,7 @@ namespace StoreUI
                 Location location = _locationBL.GetLocation(customerOrder.LocationID);
                 Customer customer = _customerBL.SearchCustomer(customerOrder.CustomerID);
                 List<LineItem> lineItems = _lineItemBL.GetLineItems(orderId);
-                Console.WriteLine($"\nCustomer Name: {customer.FirstName} {customer.LastName} \nLocation Name: {location.StoreName}");
+                Console.WriteLine($"\nCustomer Name: {customer.FirstName} {customer.LastName} \nLocation Name: {location.StoreName} \nOrder Date: {customerOrder.OrderDate}");
                 foreach (LineItem lineItem in lineItems)
                 {
                     List<Product> products = _productBL.GetAllProducts();
@@ -149,67 +182,62 @@ namespace StoreUI
         private void PlaceOrder() {
             bool orderRepeat = true;
             int i = 0;
-            List<Product> products = _productBL.GetAllProducts();
-            List<int> quantity = new List<int>();
-            string locationName = _validate.ValidateString("\nEnter name of location to shop at: ");
-            int orderID = _orderBL.GetAllOrders().Count + 1;
+            DateTime orderDate = new DateTime();
             try {
+                List<Product> products = _productBL.GetAllProducts();
+                List<int> quantity = new List<int>();
+                string locationName = _validate.ValidateString("\nEnter name of location to shop at: ");
+                int orderID = 0;
                 Location location = _locationBL.GetLocation(locationName);
                 string firstName = _validate.ValidateString("Enter your first name: ");
                 string lastName = _validate.ValidateString("Enter your last name: ");
-                try
+                Customer customer = _customerBL.SearchCustomer(firstName, lastName);
+                Console.WriteLine("Enter the amount desired of each item");
+                orderDate = DateTime.Now;
+                Order newOrder = new Order(location.Id, customer.Id, orderID, 0, orderDate.ToString());
+                _orderBL.AddOrder(newOrder, location, customer);
+                foreach (Product item in products)
                 {
-                    Customer customer = _customerBL.SearchCustomer(firstName, lastName);
-                    Console.WriteLine("Enter the amount desired of each item");
-                    Order newOrder = new Order(location.Id, customer.Id, orderID, 0);
-                    _orderBL.AddOrder(newOrder, location, customer);
-                    foreach (Product item in products)
+                    List<Order> orders = _orderBL.GetAllOrders();
+                    foreach (Order order in orders)
                     {
-                        quantity.Add(_validate.ValidateInt($"{item.ItemName}: "));
-                        LineItem lineItem = new LineItem(item.Id, quantity[i], orderID);
-                        _lineItemBL.AddLineItem(lineItem, item);
-                        i++;
+                        orderID = order.OrderID;
                     }
-                    double total = _productBL.GetTotal(quantity);
-                    do
+                    quantity.Add(_validate.ValidateInt($"{item.ItemName}: "));
+                    LineItem lineItem = new LineItem(item.Id, quantity[i], orderID);
+                    _lineItemBL.AddLineItem(lineItem, item);
+                    i++;
+                }
+                double total = _productBL.GetTotal(quantity);
+                do
+                {
+                    Console.WriteLine($"\nThe total amount of your order will be ${total} \nWould you like to proceed? (Y/N)");
+                    string orderInput = Console.ReadLine();
+                    switch (orderInput)
                     {
-                        Console.WriteLine($"\nThe total amount of your order will be ${total} \nWould you like to proceed? (Y/N)");
-                        string orderInput = Console.ReadLine();
-                        switch (orderInput)
-                        {
-                            case "Y":
-                                orderRepeat = false;
-                                try {
-                                    newOrder.Total = total;
-                                    _inventoryBL.SubtractInventory(locationName, quantity);
-                                    _orderBL.UpdateOrder(newOrder, location, customer);
-                                    Console.WriteLine($"Order Sucessfully placed \nOrder ID: {newOrder.OrderID}\n");
-                                } catch (Exception ex) {
-                                    Console.WriteLine(ex.Message);
-                                }
-                                break;
+                        case "Y":
+                            orderRepeat = false;
+                            newOrder.Total = total;
+                            newOrder.OrderID = orderID;
+                            _inventoryBL.SubtractInventory(locationName, quantity);
+                            _orderBL.UpdateOrder(newOrder, location, customer);
+                            Console.WriteLine($"Order Sucessfully placed \nOrder ID: {newOrder.OrderID}\n");
+                            break;
 
-                            case "N":
-                                orderRepeat = false;
-                                PlaceOrder();
-                                break;
+                        case "N":
+                            orderRepeat = false;
+                            PlaceOrder();
+                            break;
                     
-                            default:
-                                // Invalid Input
-                                Console.WriteLine("Please input a valid option");
-                                break;
+                        default:
+                            // Invalid Input
+                            Console.WriteLine("Please input a valid option");
+                            break;
                         }
                     } while (orderRepeat);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
-            }
-
-            
+            }     
         }
     }
 }

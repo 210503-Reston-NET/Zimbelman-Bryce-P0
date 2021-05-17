@@ -2,6 +2,7 @@ using System;
 using StoreModels;
 using StoreBL;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StoreUI
 {
@@ -40,6 +41,7 @@ namespace StoreUI
                 Console.WriteLine("[5] View location order history");
                 Console.WriteLine("[6] Replenish Inventory");
                 Console.WriteLine("[7] View all products");
+                Console.WriteLine("[8] Add A Product");
                 Console.WriteLine("[0] Go Back");
 
                 // Receives input from user
@@ -79,6 +81,10 @@ namespace StoreUI
                     case "7":
                         ViewAllProducts();
                         break;
+
+                    case "8":
+                        AddAProduct();
+                        break;
                     
                     default:
                         // Invalid Input
@@ -90,16 +96,48 @@ namespace StoreUI
 
         private void ViewLocationOrderHistory()
         {
+            bool repeat = true;
             string locationName = _validate.ValidateString("\nEnter the location you want to view");
             try
             {
                 Location location = _locationBL.GetLocation(locationName);
                 List<Order> locationOrders = _orderBL.GetLocationOrders(location.Id);
+                do
+                {
+                    Console.WriteLine("How should the orders be sorted?");
+                    Console.WriteLine("[1] Sort by Date (Newest to Oldest)");
+                    Console.WriteLine("[2] Sort by Date (Oldest to Newest)");
+                    Console.WriteLine("[3] Sort by Cost (Lowest to Highest)");
+                    string input = Console.ReadLine();
+
+                    switch (input)
+                    {
+                        case "1":
+                            repeat = false;
+                            locationOrders.OrderBy(ord => ord.OrderDate).ToList();
+                            break;
+
+                        case "2":
+                            repeat = false;
+                            locationOrders.OrderByDescending(ord => ord.OrderDate).ToList();
+                            break;
+
+                        case "3":
+                            repeat = false;
+                            locationOrders.OrderBy(ord => ord.Total).ToList();
+                            break;
+                        
+                        default:
+                            // Invalid Input
+                            Console.WriteLine("Please input a valid option");
+                            break;
+                    }
+                } while (repeat);
                 foreach (Order order in locationOrders)
                 {
                     Customer customer = _customerBL.SearchCustomer(order.CustomerID);
                     List<LineItem> lineItems = _lineItemBL.GetLineItems(order.OrderID);
-                    Console.WriteLine($"\nCustomer Name: {customer.FirstName} {customer.LastName} \nLocation Name: {location.StoreName}");
+                    Console.WriteLine($"\nCustomer Name: {customer.FirstName} {customer.LastName} \nLocation Name: {location.StoreName} \nOrder Date: {order.OrderDate}");
                     foreach (LineItem lineItem in lineItems)
                     {
                         List<Product> products = _productBL.GetAllProducts();
@@ -120,6 +158,8 @@ namespace StoreUI
         }
 
         private void ViewCustomers() {
+            try
+            {
                 List<Customer> customers = _customerBL.GetAllCustomers();
                 if (customers.Count == 0) {
                     Console.WriteLine("No customers found");
@@ -127,6 +167,11 @@ namespace StoreUI
                     foreach (Customer customer in customers) {
                     Console.WriteLine(customer.ToString());
                 }   
+            }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
@@ -157,9 +202,9 @@ namespace StoreUI
             string address = _validate.ValidateString("Enter the location street address: ");
             string city = _validate.ValidateString("Enter the location city: ");
             string state = _validate.ValidateString("Enter the location state: ");
-            int numOfProducts = _productBL.GetAllProducts().Count;
             try
             {
+                int numOfProducts = _productBL.GetAllProducts().Count;
                 Location newLocation = new Location(name, address, city, state);
                 Location createdLocation = _locationBL.AddLocation(newLocation);
                 Console.WriteLine("New Location Created\n");
@@ -202,11 +247,10 @@ namespace StoreUI
 
         private void ViewInventory() {
             string storeName = _validate.ValidateString("\nEnter name of store you want to view");
-            Location location = _locationBL.GetLocation(storeName);
-            List<Product> products = _productBL.GetAllProducts();
             try
             {
-                // First index is numOfProducts
+                List<Product> products = _productBL.GetAllProducts();
+                Location location = _locationBL.GetLocation(storeName);
                 Inventory inventory = _inventoryBL.GetStoreInventory(location.Id);
                 foreach (Product product in products)
                 {
@@ -221,7 +265,9 @@ namespace StoreUI
         }
 
         private void ViewAllProducts() {
-            List<Product> products = _productBL.GetAllProducts();
+            try
+            {
+                List<Product> products = _productBL.GetAllProducts();
                 if (products.Count == 0) {
                     Console.WriteLine("\nNo products found");
                 } else {
@@ -230,32 +276,37 @@ namespace StoreUI
                     Console.WriteLine(product.ToString());
                 }   
             }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         
         private void ReplenishInventory() {
             string name = _validate.ValidateString("\nEnter name of store you want to replenish");
-            List<Product> products = _productBL.GetAllProducts();
-            List<int> quantity = new List<int>();
-            int numOfProducts = products.Count;
-            int i = 0;
-            foreach (Product product in products)
-            {
-                quantity.Add(_validate.ValidateInt($"Enter quantity to add for {product.ItemName}"));
-            }
             try
             {
+                List<Product> products = _productBL.GetAllProducts();
+                List<int> quantity = new List<int>();
+                int numOfProducts = products.Count;
+                int i = 0;
+                foreach (Product product in products)
+                {
+                    quantity.Add(_validate.ValidateInt($"Enter quantity to add for {product.ItemName}"));
+                }
                 List<int> inventory = _inventoryBL.ReplenishInventory(name, numOfProducts, quantity);
                 Console.WriteLine($"{name} store inventory updated");
                 foreach (Product product in products) {
                     Console.WriteLine($"{product.ItemName}: {inventory[i]}");
                     i++;
                 }
-                Console.WriteLine("");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                    Console.WriteLine("");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
         }
     }
 }
