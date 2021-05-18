@@ -91,7 +91,9 @@ namespace StoreUI
             Log.Information("Customer information input");
             try
             {
+                // New customer model created and sent to Business Logic
                 Customer newCustomer = new Customer(firstName, lastName,  birthdate, phoneNumber, email, mailAddress);
+                Log.Information("UI sent customer to BL");
                 Customer createdCustomer = _customerBL.AddCustomer(newCustomer);
                 Console.WriteLine("New Customer Created!\n");
                 Console.WriteLine(createdCustomer.ToString());
@@ -111,6 +113,7 @@ namespace StoreUI
             string lastName = _validate.ValidateString("Enter your last name: ");
             Log.Information("Customer information input");
             try {
+                // Search for specific customer and retrive orders
                 Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 List<Order> orders = _orderBL.GetCustomerOrders(customer.Id);
                 List<Order> sortedOrders = new List<Order>();
@@ -148,6 +151,7 @@ namespace StoreUI
                             break;
                     }
                 } while (repeat);
+                // Iterate through, orders, line items, and products to display order information
                 foreach (Order order in sortedOrders)
                 {
                     List<LineItem> lineItems = _lineItemBL.GetLineItems(order.OrderID);
@@ -178,11 +182,13 @@ namespace StoreUI
             Log.Information("Order ID Input");
             try
             {
+                // Search for specific order
                 Order customerOrder = _orderBL.ViewOrder(orderId);
                 Location location = _locationBL.GetLocation(customerOrder.LocationID);
                 Customer customer = _customerBL.SearchCustomer(customerOrder.CustomerID);
                 List<LineItem> lineItems = _lineItemBL.GetLineItems(orderId);
                 Console.WriteLine($"\nCustomer Name: {customer.FirstName} {customer.LastName} \nLocation Name: {location.StoreName} \nOrder Date: {customerOrder.OrderDate}");
+                // Iterate through line items to show purchases
                 foreach (LineItem lineItem in lineItems)
                 {
                     List<Product> products = _productBL.GetAllProducts();
@@ -208,6 +214,7 @@ namespace StoreUI
         private void PlaceOrder() {
             bool orderRepeat = true;
             int i = 0;
+            bool orderPlaced = false;
             DateTime orderDate = new DateTime();
             Order deleteOrder = new Order(1, 1, 1, 1.99, "");
             try {
@@ -222,18 +229,27 @@ namespace StoreUI
                 Log.Information("Customer Name Entered");
                 Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 Console.WriteLine("Enter the amount desired of each item");
+                // Gets local date for order date and time
                 orderDate = DateTime.Now;
+                // Create initial new order to generate orderID, used by line items
                 Order newOrder = new Order(location.Id, customer.Id, orderID, 0, orderDate.ToString());
-                deleteOrder = newOrder;
+                // Add customer information to order
                 _orderBL.AddOrder(newOrder, location, customer);
+                orderPlaced = true;
+                // Used to delete order later if canceled
+                deleteOrder = newOrder;
+                // Iterate through products to display choices to customer
                 foreach (Product item in products)
                 {
                     List<Order> orders = _orderBL.GetAllOrders();
+                    // Retrieves latest orderID
                     foreach (Order order in orders)
                     {
                         orderID = order.OrderID;
                     }
+                    deleteOrder.OrderID = orderID;
                     quantity.Add(_validate.ValidateInt($"{item.ItemName}: "));
+                    // Create line item for each product
                     LineItem lineItem = new LineItem(item.Id, quantity[i], orderID);
                     Log.Information("UI sent line item to BL");
                     _lineItemBL.AddLineItem(lineItem, item);
@@ -259,7 +275,9 @@ namespace StoreUI
                             break;
 
                         case "N":
-                            Log.Information("Customer canceled purchase");
+                            orderRepeat = false;
+                            Log.Information("Customer canceled purchase, Order deleted");
+                            _orderBL.DeleteOrder(deleteOrder);
                             break;
                     
                         default:
@@ -268,10 +286,13 @@ namespace StoreUI
                             break;
                         }
                     } while (orderRepeat);
-            } catch (Inventory.NotEnoughInventoryException ex) {
-                _orderBL.DeleteOrder(deleteOrder);
-                Console.WriteLine(ex.Message);
             } catch (Exception ex) {
+                // Delete order if unsucessful, will auto delete line items
+                Log.Information(ex.Message);
+                if (orderPlaced) {
+                    Log.Information("Order Deleted");
+                    _orderBL.DeleteOrder(deleteOrder);
+                }
                 Console.WriteLine(ex.Message);
             }     
         }

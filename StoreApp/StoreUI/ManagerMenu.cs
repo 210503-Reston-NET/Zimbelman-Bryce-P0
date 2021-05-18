@@ -114,6 +114,7 @@ namespace StoreUI
             Log.Information("Location name input");
             try
             {
+                // Search for specific location and retrieve orders
                 Location location = _locationBL.GetLocation(locationName);
                 List<Order> locationOrders = _orderBL.GetLocationOrders(location.Id);
                 List<Order> sortedOrders = new List<Order>();
@@ -151,6 +152,7 @@ namespace StoreUI
                             break;
                     }
                 } while (repeat);
+                // Iterate through, orders, line items, and products to display order information
                 foreach (Order order in sortedOrders)
                 {
                     Customer customer = _customerBL.SearchCustomer(order.CustomerID);
@@ -181,6 +183,7 @@ namespace StoreUI
         private void ViewCustomers() {
             try
             {
+                // Check if any customers exist and then display all
                 List<Customer> customers = _customerBL.GetAllCustomers();
                 if (customers.Count == 0) {
                     Console.WriteLine("No customers found");
@@ -210,6 +213,7 @@ namespace StoreUI
                 Log.Information("Customer information input");
                 try
                 {
+                    // New customer model created and sent to Business Logic
                     Customer newCustomer = new Customer(firstName, lastName, birthdate, phoneNumber, email, mailAddress);
                     Customer createdCustomer = _customerBL.AddCustomer(newCustomer);
                     Console.WriteLine("New Customer Created!\n");
@@ -233,6 +237,7 @@ namespace StoreUI
             Log.Information("Location information input");
             try
             {
+                // New location model created and sent to Business Logic
                 int numOfProducts = _productBL.GetAllProducts().Count;
                 Location newLocation = new Location(name, address, city, state);
                 Log.Information("UI sent new location to BL");
@@ -256,12 +261,14 @@ namespace StoreUI
             string description = _validate.ValidateString("Enter a description for the product: ");
             Log.Information("Product information input");
             try {
+                // New product model created and sent to Business Logic
                 Product newProduct = new Product(itemName, price, description);
                 Log.Information("UI sent new product to BL");
                 Product createdProduct = _productBL.AddProduct(newProduct);
                 List<int> productQuantity = new List<int>();
                 List<Location> locations = _locationBL.GetAllLocations();
                 List<Product> products = _productBL.GetAllProducts();
+                // Ensure quantity is set to 0 for all locations so customer may not purchase before stocked
                 foreach (Product item in products)
                 {
                     productQuantity.Add(0);
@@ -287,6 +294,7 @@ namespace StoreUI
             Log.Information("Customer name input");
             try
             {
+                // New Customer model created and sent to Business Logic
                 Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 Console.WriteLine(customer.ToString());
             }
@@ -304,6 +312,7 @@ namespace StoreUI
             Log.Information("Location name input");
             try
             {
+                // Retrieve and display specific inventory 
                 List<Product> products = _productBL.GetAllProducts();
                 Location location = _locationBL.GetLocation(storeName);
                 Inventory inventory = _inventoryBL.GetStoreInventory(location.Id);
@@ -325,6 +334,7 @@ namespace StoreUI
         private void ViewAllProducts() {
             try
             {
+                // Retrieve and display all products
                 List<Product> products = _productBL.GetAllProducts();
                 if (products.Count == 0) {
                     Console.WriteLine("\nNo products found");
@@ -352,8 +362,8 @@ namespace StoreUI
             {
                 List<Product> products = _productBL.GetAllProducts();
                 List<int> quantity = new List<int>();
-                int numOfProducts = products.Count;
                 int i = 0;
+                // Add quantity for each product to list and send to Business Logic
                 foreach (Product product in products)
                 {
                     quantity.Add(_validate.ValidateInt($"Enter quantity to add for {product.ItemName}"));
@@ -361,6 +371,7 @@ namespace StoreUI
                 Log.Information("UI sent updatd inventory to BL");
                 List<int> inventory = _inventoryBL.ReplenishInventory(name, quantity);
                 Console.WriteLine($"{name} store inventory updated");
+                // List updated inventory values to user
                 foreach (Product product in products) {
                     Console.WriteLine($"{product.ItemName}: {inventory[i]}");
                     i++;

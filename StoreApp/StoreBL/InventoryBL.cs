@@ -55,6 +55,7 @@ namespace StoreBL
             foreach (Product item in products)
             {
                 inventoryUpdated = false;
+                // If no inventory entries exist
                 if (!inventories.Any()) {
                     Inventory newInventory = new Inventory(location.Id, item.Id, productQuantity[i]);
                     updatedInventory.Add(productQuantity[i]);
@@ -64,6 +65,7 @@ namespace StoreBL
                     inventoryUpdated = true;
                 }
                 foreach (Inventory inventory in inventories) {
+                    // If match is found update inventory
                     if (inventory.LocationID.Equals(location.Id) && inventory.ProductID.Equals(item.Id) && !inventoryUpdated) {
                         inventory.Quantity += productQuantity[i];
                         updatedInventory.Add(inventory.Quantity);
@@ -73,6 +75,7 @@ namespace StoreBL
                         inventoryUpdated = true;
                         }
                     }
+                    // If inventory exists but specific item does not
                     if (!inventoryUpdated) {
                         Inventory newInventory = new Inventory(location.Id, item.Id, productQuantity[i]);
                         updatedInventory.Add(productQuantity[i]);
@@ -95,8 +98,10 @@ namespace StoreBL
             Location location = _locationBL.GetLocation(nameOfStore);
             foreach (Product item in products)
             {
+                // If match found update inventory
                 foreach (Inventory inventory in inventories) {
                     if (inventory.LocationID.Equals(location.Id) && inventory.ProductID.Equals(item.Id)) {
+                        // If not enough inventory exists for purchase, throw exception
                         if (inventory.Quantity-productQuantity[i] < 0) {
                             throw new Inventory.NotEnoughInventoryException("Not enough item in inventory");
                         }
