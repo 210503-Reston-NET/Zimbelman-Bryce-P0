@@ -83,5 +83,11 @@ namespace StoreBL
             Log.Information("No matching orders found");
             throw new Exception("No matching orders found");
         }
+
+        public Order DeleteOrder(Order order)
+        {
+            Log.Information("BL sent order to DL for deletion");
+            return _repo.DeleteOrder(order);
+        }
     }
 }

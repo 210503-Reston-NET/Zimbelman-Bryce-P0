@@ -116,6 +116,7 @@ namespace StoreUI
             {
                 Location location = _locationBL.GetLocation(locationName);
                 List<Order> locationOrders = _orderBL.GetLocationOrders(location.Id);
+                List<Order> sortedOrders = new List<Order>();
                 do
                 {
                     Console.WriteLine("How should the orders be sorted?");
@@ -129,19 +130,19 @@ namespace StoreUI
                         case "1":
                             Log.Information("Sort by Date Ascending Selected");
                             repeat = false;
-                            locationOrders.OrderBy(ord => ord.OrderDate).ToList();
+                            sortedOrders = locationOrders.OrderByDescending(ord => ord.OrderDate).ToList();
                             break;
 
                         case "2":
                             Log.Information("Sort by Date Descending Selected");
                             repeat = false;
-                            locationOrders.OrderByDescending(ord => ord.OrderDate).ToList();
+                            sortedOrders = locationOrders.OrderBy(ord => ord.OrderDate).ToList();
                             break;
 
                         case "3":
                             Log.Information("Sort by Cost Ascending Seleceted");
                             repeat = false;
-                            locationOrders.OrderBy(ord => ord.Total).ToList();
+                            sortedOrders = locationOrders.OrderBy(ord => ord.Total).ToList();
                             break;
                         
                         default:
@@ -150,7 +151,7 @@ namespace StoreUI
                             break;
                     }
                 } while (repeat);
-                foreach (Order order in locationOrders)
+                foreach (Order order in sortedOrders)
                 {
                     Customer customer = _customerBL.SearchCustomer(order.CustomerID);
                     List<LineItem> lineItems = _lineItemBL.GetLineItems(order.OrderID);

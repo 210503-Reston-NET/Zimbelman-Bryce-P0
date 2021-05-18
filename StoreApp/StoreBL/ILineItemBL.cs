@@ -22,5 +22,12 @@ namespace StoreBL
          /// <param name="orderID"></param>
          /// <returns></returns>
          List<LineItem> GetLineItems(int orderID);
+
+        /// <summary>
+        /// Business Logic to delete a specific line item
+        /// </summary>
+        /// <param name="lineItem"></param>
+        /// <returns></returns>
+         LineItem DeleteLineItem(LineItem lineItem);
     }
 }

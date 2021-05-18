@@ -177,6 +177,17 @@ namespace StoreDL
             return new Model.Order(found.OrderId , order.LocationID, order.CustomerID, found.OrderId, found.Total, found.OrderDate);
         }
 
+        public Order DeleteOrder(Order order) {
+            Entity.Order deleteOrder = _context.Orders.Single(ord => ord.OrderId == order.OrderID);
+            if (deleteOrder != null) {
+                _context.Orders.Remove(deleteOrder);
+                _context.SaveChanges();
+                Log.Information("DL deleted order from DB");
+                return order;
+            }
+            return null;
+        }
+
         public Model.Product GetProduct(Model.Product product)
         {
             Entity.Product found = _context.Products.FirstOrDefault(prod => prod.ItemName == product.ItemName && prod.Price == product.Price && prod.Description == product.Description);
@@ -227,6 +238,18 @@ namespace StoreDL
             _context.SaveChanges();
             Log.Information("DL persisted order update to DB");
             return order;
+        }
+
+        public LineItem DeleteLineItem(LineItem lineItem)
+        {
+            var deleteLineItem = _context.LineItems.Single(li => li.LineItemId == lineItem.Id);
+            if (deleteLineItem != null) {
+                _context.LineItems.Remove(deleteLineItem);
+                _context.SaveChanges();
+                Log.Information("DL deleted line item from DB");
+                return lineItem;
+            }
+            return null;
         }
     }
 }

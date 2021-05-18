@@ -103,6 +103,13 @@ namespace StoreDL
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
+        /// 
+        /// <summary>
+        /// Data Logic to delete a specific order
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        Order DeleteOrder(Order order);
         Order GetOrder(Order order);
         /// <summary>
         /// Data Logic to retrieve a list of all orders
@@ -127,5 +134,11 @@ namespace StoreDL
         /// <param name="lineItem"></param>
         /// <returns></returns>
         LineItem GetLineItem(LineItem lineItem);
+        /// <summary>
+        /// Data Logic to delete a specific line item
+        /// </summary>
+        /// <param name="lineItem"></param>
+        /// <returns></returns>
+        LineItem DeleteLineItem(LineItem lineItem);
     }
 }

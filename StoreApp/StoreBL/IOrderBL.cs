@@ -43,5 +43,11 @@ namespace StoreBL
          /// </summary>
          /// <returns></returns>
         List<Order> GetAllOrders();
+        /// <summary>
+        /// Business Logic to delete an order
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        Order DeleteOrder(Order order);
     }
 }

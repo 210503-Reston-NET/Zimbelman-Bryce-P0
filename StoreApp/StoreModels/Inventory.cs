@@ -1,3 +1,4 @@
+using System;
 namespace StoreModels
 {
     public class Inventory
@@ -16,6 +17,11 @@ namespace StoreModels
 
         public Inventory(int id,int locationId, int productId, int quantity) : this(locationId, productId, quantity) {
             this.Id = id;
+        }
+
+        [Serializable]
+        public class NotEnoughInventoryException : Exception {
+            public NotEnoughInventoryException(string message) : base(message) {}
         }
         
         /// <summary>

@@ -20,6 +20,7 @@ namespace StoreBL
             _locationBL = locationBL;
             _productBL = productBL;
         }
+
         public Inventory GetStoreInventory(int locationId)
         {
             List<Inventory> inventories = _repo.GetAllInventories();
@@ -93,6 +94,9 @@ namespace StoreBL
             {
                 foreach (Inventory inventory in inventories) {
                     if (inventory.LocationID.Equals(location.Id) && inventory.ProductID.Equals(item.Id)) {
+                        if (inventory.Quantity-productQuantity[i] < 0) {
+                            throw new Inventory.NotEnoughInventoryException("Not enough item in inventory");
+                        }
                         inventory.Quantity -= productQuantity[i];
                         updatedInventory.Add(inventory.Quantity);
                         i++;

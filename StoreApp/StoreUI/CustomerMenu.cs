@@ -113,6 +113,7 @@ namespace StoreUI
             try {
                 Customer customer = _customerBL.SearchCustomer(firstName, lastName);
                 List<Order> orders = _orderBL.GetCustomerOrders(customer.Id);
+                List<Order> sortedOrders = new List<Order>();
                 do
                 {
                     Console.WriteLine("How should the orders be sorted?");
@@ -126,19 +127,19 @@ namespace StoreUI
                         case "1":
                             repeat = false;
                             Log.Information("Sort by Date Ascending Selected");
-                            orders = orders.OrderBy(ord => ord.OrderDate).ToList();
+                            sortedOrders = orders.OrderBy(ord => ord.OrderDate).ToList();
                             break;
 
                         case "2":
                             repeat = false;
                             Log.Information("Sort by Date Descending Selected");
-                            orders = orders.OrderByDescending(ord => ord.OrderDate).ToList();
+                            sortedOrders = orders.OrderByDescending(ord => ord.OrderDate).ToList();
                             break;
 
                         case "3":
                             repeat = false;
                             Log.Information("Sort by Cost Ascending Seleceted");
-                            orders = orders.OrderBy(ord => ord.Total).ToList();
+                            sortedOrders = orders.OrderBy(ord => ord.Total).ToList();
                             break;
                         
                         default:
@@ -147,7 +148,7 @@ namespace StoreUI
                             break;
                     }
                 } while (repeat);
-                foreach (Order order in orders)
+                foreach (Order order in sortedOrders)
                 {
                     List<LineItem> lineItems = _lineItemBL.GetLineItems(order.OrderID);
                     Location location = _locationBL.GetLocation(order.LocationID);
@@ -208,6 +209,7 @@ namespace StoreUI
             bool orderRepeat = true;
             int i = 0;
             DateTime orderDate = new DateTime();
+            Order deleteOrder = new Order(1, 1, 1, 1.99, "");
             try {
                 List<Product> products = _productBL.GetAllProducts();
                 List<int> quantity = new List<int>();
@@ -222,6 +224,7 @@ namespace StoreUI
                 Console.WriteLine("Enter the amount desired of each item");
                 orderDate = DateTime.Now;
                 Order newOrder = new Order(location.Id, customer.Id, orderID, 0, orderDate.ToString());
+                deleteOrder = newOrder;
                 _orderBL.AddOrder(newOrder, location, customer);
                 foreach (Product item in products)
                 {
@@ -263,6 +266,9 @@ namespace StoreUI
                             break;
                         }
                     } while (orderRepeat);
+            } catch (Inventory.NotEnoughInventoryException ex) {
+                _orderBL.DeleteOrder(deleteOrder);
+                Console.WriteLine(ex.Message);
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
             }     

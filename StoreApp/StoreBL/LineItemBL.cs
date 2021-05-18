@@ -23,6 +23,12 @@ namespace StoreBL
             return _repo.AddLineItem(lineItem, product);
         }
 
+        public LineItem DeleteLineItem(LineItem lineItem)
+        {
+            Log.Information("BL sent line item to DL for deletion");
+            return _repo.DeleteLineItem(lineItem);
+        }
+
         public List<LineItem> GetAllLineItems()
         {
             Log.Information("BL attempt to retrieve all line items from DL");
