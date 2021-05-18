@@ -14,11 +14,15 @@ namespace StoreBL
     {
         private IRepository _repo;
         private ILocationBL _locationBL;
-        private IProductBL _productBL;
-        public InventoryBL(IRepository repo, ILocationBL locationBL, IProductBL productBL) {
+        public InventoryBL(IRepository repo, ILocationBL locationBL) {
             _repo = repo;
             _locationBL = locationBL;
-            _productBL = productBL;
+        }
+
+        public List<Inventory> GetAllInventories()
+        {
+            Log.Information("BL attempt to retreive all inventory from DL");
+            return _repo.GetAllInventories();
         }
 
         public Inventory GetStoreInventory(int locationId)
@@ -39,7 +43,7 @@ namespace StoreBL
             }
     }
 
-        public List<int> ReplenishInventory(string nameOfStore, int numOfProducts, List<int> productQuantity)
+        public List<int> ReplenishInventory(string nameOfStore, List<int> productQuantity)
         {
             int i = 0;
             List<Inventory> inventories = _repo.GetAllInventories();
@@ -47,12 +51,11 @@ namespace StoreBL
             List<int> updatedInventory = new List<int>();
             Log.Information("BL attempt to retrive specific location from DL");
             Location location = _locationBL.GetLocation(nameOfStore);
-            bool emptyInventory = false;
             bool inventoryUpdated = false;
             foreach (Product item in products)
             {
+                inventoryUpdated = false;
                 if (!inventories.Any()) {
-                    emptyInventory = true;
                     Inventory newInventory = new Inventory(location.Id, item.Id, productQuantity[i]);
                     updatedInventory.Add(productQuantity[i]);
                     i++;
@@ -61,7 +64,7 @@ namespace StoreBL
                     inventoryUpdated = true;
                 }
                 foreach (Inventory inventory in inventories) {
-                    if (inventory.LocationID.Equals(location.Id) && inventory.ProductID.Equals(item.Id) && !emptyInventory) {
+                    if (inventory.LocationID.Equals(location.Id) && inventory.ProductID.Equals(item.Id) && !inventoryUpdated) {
                         inventory.Quantity += productQuantity[i];
                         updatedInventory.Add(inventory.Quantity);
                         i++;
@@ -70,7 +73,7 @@ namespace StoreBL
                         inventoryUpdated = true;
                         }
                     }
-                    if (!emptyInventory && !inventoryUpdated) {
+                    if (!inventoryUpdated) {
                         Inventory newInventory = new Inventory(location.Id, item.Id, productQuantity[i]);
                         updatedInventory.Add(productQuantity[i]);
                         i++;

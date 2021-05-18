@@ -11,7 +11,7 @@ namespace StoreBL
         /// <param name="numOfProducts"></param>
         /// <param name="productQuantity"></param>
         /// <returns></returns>
-         List<int> ReplenishInventory(string nameOfStore, int numOfProducts, List<int> productQuantity);
+         List<int> ReplenishInventory(string nameOfStore, List<int> productQuantity);
         /// <summary>
         /// Business Logic to subtract store inventory 
         /// </summary>
@@ -25,5 +25,6 @@ namespace StoreBL
          /// <param name="locationId"></param>
          /// <returns></returns>
          Inventory GetStoreInventory(int locationId);
+         List<Inventory> GetAllInventories();
     }
 }

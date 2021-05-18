@@ -127,13 +127,13 @@ namespace StoreUI
                         case "1":
                             repeat = false;
                             Log.Information("Sort by Date Ascending Selected");
-                            sortedOrders = orders.OrderBy(ord => ord.OrderDate).ToList();
+                            sortedOrders = orders.OrderByDescending(ord => ord.OrderDate).ToList();
                             break;
 
                         case "2":
                             repeat = false;
                             Log.Information("Sort by Date Descending Selected");
-                            sortedOrders = orders.OrderByDescending(ord => ord.OrderDate).ToList();
+                            sortedOrders = orders.OrderBy(ord => ord.OrderDate).ToList();
                             break;
 
                         case "3":
@@ -235,6 +235,7 @@ namespace StoreUI
                     }
                     quantity.Add(_validate.ValidateInt($"{item.ItemName}: "));
                     LineItem lineItem = new LineItem(item.Id, quantity[i], orderID);
+                    Log.Information("UI sent line item to BL");
                     _lineItemBL.AddLineItem(lineItem, item);
                     i++;
                 }
@@ -250,10 +251,11 @@ namespace StoreUI
                             Log.Information("Customer to proceed with purchase");
                             newOrder.Total = total;
                             newOrder.OrderID = orderID;
+                            Log.Information("UI sent updated inventory to BL");
                             _inventoryBL.SubtractInventory(locationName, quantity);
+                            Log.Information("UI sent order to BL");
                             _orderBL.UpdateOrder(newOrder, location, customer);
                             Console.WriteLine($"Order Sucessfully placed \nOrder ID: {newOrder.OrderID}\n");
-                            Log.Information("Order Placed");
                             break;
 
                         case "N":

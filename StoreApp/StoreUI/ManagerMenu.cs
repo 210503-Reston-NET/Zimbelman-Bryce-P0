@@ -235,9 +235,9 @@ namespace StoreUI
             {
                 int numOfProducts = _productBL.GetAllProducts().Count;
                 Location newLocation = new Location(name, address, city, state);
+                Log.Information("UI sent new location to BL");
                 Location createdLocation = _locationBL.AddLocation(newLocation);
                 Console.WriteLine("New Location Created\n");
-                Log.Information("Location created");
                 Console.WriteLine(createdLocation.ToString());
             }
             catch (Exception ex) 
@@ -257,9 +257,21 @@ namespace StoreUI
             Log.Information("Product information input");
             try {
                 Product newProduct = new Product(itemName, price, description);
+                Log.Information("UI sent new product to BL");
                 Product createdProduct = _productBL.AddProduct(newProduct);
+                List<int> productQuantity = new List<int>();
+                List<Location> locations = _locationBL.GetAllLocations();
+                List<Product> products = _productBL.GetAllProducts();
+                foreach (Product item in products)
+                {
+                    productQuantity.Add(0);
+                }
+                foreach (Location location in locations)
+                {
+                    Log.Information("UI sent updated inventory to BL");
+                    _inventoryBL.ReplenishInventory(location.StoreName, productQuantity);
+                }
                 Console.WriteLine("New Product Created\n");
-                Log.Information("Product Created");
                 Console.WriteLine(createdProduct.ToString());
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
@@ -346,9 +358,9 @@ namespace StoreUI
                 {
                     quantity.Add(_validate.ValidateInt($"Enter quantity to add for {product.ItemName}"));
                 }
-                List<int> inventory = _inventoryBL.ReplenishInventory(name, numOfProducts, quantity);
+                Log.Information("UI sent updatd inventory to BL");
+                List<int> inventory = _inventoryBL.ReplenishInventory(name, quantity);
                 Console.WriteLine($"{name} store inventory updated");
-                Log.Information("Store Inventory Updated");
                 foreach (Product product in products) {
                     Console.WriteLine($"{product.ItemName}: {inventory[i]}");
                     i++;
